@@ -1,0 +1,7 @@
+---
+cron:
+- name: Widget Throbbler
+  alert_after: 15m
+  alert_via:
+  - slack:
+      channel: '#foobar'

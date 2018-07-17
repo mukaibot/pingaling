@@ -1,0 +1,15 @@
+---
+s3:
+- name: Dingbat Writer
+  check_type: presence
+  filename: "s3://dingbats/{d}-{m}-{Y}/file"
+  alert_via:
+  - slack:
+      channel: '#foobar'
+- name: Hopjam Freshness
+  check_type: freshness
+  filename: "s3://dingbats/file"
+  timestamp: '< 23h'
+  alert_via:
+  - slack:
+      channel: '#foobar'

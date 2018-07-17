@@ -1,0 +1,30 @@
+$LOAD_PATH << File.expand_path(File.join(__dir__, 'lib'))
+
+require 'rom/sql/rake_task'
+require 'database'
+require 'dotenv'
+require 'yaml'
+require 'repositories/endpoints'
+
+SAMPLE_DATA = File.expand_path(File.join(__dir__, 'test', 'fixtures'))
+
+namespace :db do
+  task :setup do
+    Dotenv.load
+    ROM::SQL::RakeSupport.env = Database.instance
+  end
+
+  desc "Add a sample endpoint to the database"
+  task :sample_web => :setup do
+    config = YAML.load_file(File.join(SAMPLE_DATA, "config-web.yml"))
+    repo = Repositories::Endpoints.new(Database.instance)
+    config['web_endpoints'].each do |ep|
+      repo.create(
+        host: ep.fetch('host'),
+        timeout: ep.fetch('timeout'),
+        retries: ep.fetch('retries'),
+        next_check: Time.now
+      )
+    end
+  end
+end
