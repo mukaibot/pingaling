@@ -7,5 +7,5 @@ gem "rom"
 gem "rom-sql"
 
 group :development, :test do
-  gem "minitest"
+  gem "rspec"
 end

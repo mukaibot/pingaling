@@ -1,23 +1,25 @@
 $LOAD_PATH << File.expand_path(File.join(__dir__, 'lib'))
 
 require 'rom/sql/rake_task'
+require 'rake/testtask'
 require 'database'
 require 'dotenv'
 require 'yaml'
 require 'repositories/endpoints'
 
-SAMPLE_DATA = File.expand_path(File.join(__dir__, 'test', 'fixtures'))
+SAMPLE_DATA = File.expand_path(File.join(__dir__, 'spec', 'fixtures'))
 
 namespace :db do
   task :setup do
     Dotenv.load
-    ROM::SQL::RakeSupport.env = Database.instance
+    ROM::SQL::RakeSupport.env = Database.ddl_instance
   end
 
   desc "Add a sample endpoint to the database"
   task :sample_web => :setup do
     config = YAML.load_file(File.join(SAMPLE_DATA, "config-web.yml"))
-    repo = Repositories::Endpoints.new(Database.instance)
+    repo = Endpoints.new(Database.instance)
+    # repo = Repositories::Endpoints.new(Database.instance)
     config['web_endpoints'].each do |ep|
       repo.create(
         host: ep.fetch('host'),
@@ -27,4 +29,26 @@ namespace :db do
       )
     end
   end
+
+  namespace :test do
+    task :setup do
+      Dotenv.load('.env.test')
+      ROM::SQL::RakeSupport.env = Database.ddl_instance
+    end
+
+    desc 'Prepare the database for tests'
+    task :prepare => :setup do
+      Rake::Task["db:reset"].invoke
+      Rake::Task["db:sample_web"].execute
+    end
+  end
+end
+
+Rake::TestTask.new do |t|
+  Rake::Task["db:test:prepare"].invoke
+  t.libs << "spec"
+  t.test_files = FileList['spec/**/*_spec.rb']
+  t.verbose = false
+  t.warning = false
+  require_relative 'spec/spec_helper'
 end
