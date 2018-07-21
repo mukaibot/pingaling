@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+
+$LOAD_PATH << File.expand_path(File.join(__dir__, '..', 'lib'))
+
+require 'commands/main_command'
+
+$stdout.sync = true
+$stderr.sync = true
+
+Commands::MainCommand.run
