@@ -1,3 +1,0 @@
-project=api
-test=rspec
-template=erb
