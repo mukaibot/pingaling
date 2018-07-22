@@ -1,12 +1,22 @@
-require 'net/http'
-require 'uri'
+require 'http'
 
 class Gateway
   def initialize
-    @host = URI.parse('http://localhost:4567/endpoints')
+    @host = 'http://localhost:4567'
   end
 
   def get_endpoints
-    Net::HTTP.get_response(@host)
+    response = HTTP.get(@host + '/endpoints')
+    response.code == 200 ? response : raise(ApiUnavailableError.new(@host))
+  end
+
+  def post_manifest(json)
+    HTTP.post(@host + '/manifest', json: json)
+  end
+
+  class ApiUnavailableError < StandardError
+    def initialize(host)
+      super("There was a problem talking to the API at #{host}")
+    end
   end
 end

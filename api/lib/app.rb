@@ -8,9 +8,13 @@ end
 
 get '/endpoints' do
   ep = []
-  3.times do
+  5.times do
     ep << Endpoint.random
   end
 
   ep.to_json
+end
+
+post '/manifest' do
+  'Ok!'
 end
