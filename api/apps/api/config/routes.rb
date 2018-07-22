@@ -3,3 +3,5 @@
 #
 # Example:
 # get '/hello', to: ->(env) { [200, {}, ['Hello from Hanami!']] }
+get '/endpoints/:name', to: 'endpoints#show'
+get '/endpoints', to: 'endpoints#list'
