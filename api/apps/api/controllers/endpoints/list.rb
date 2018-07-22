@@ -1,6 +1,6 @@
-module Web::Controllers::Endpoints
+module Api::Controllers::Endpoints
   class List
-    include Web::Action
+    include Api::Action
     accept :json
     expose :endpoints
 

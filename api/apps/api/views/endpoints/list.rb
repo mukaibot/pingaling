@@ -1,8 +1,8 @@
-module Web
+module Api
   module Views
     module Endpoints
       class List
-        include Web::View
+        include Api::View
         layout false
 
         def render
