@@ -10,7 +10,7 @@ How can it alert you?
 * Slack
 
 Why should I use it?
-* Designed for GitOps
-* One system to monitor all the bits of your distributed app
-* Pleasantish web ui
+* Declarative usage, designed for GitOps
+* One system to monitor all the bits of your distributed applications
+* Thoughtful command-line driven interface, built with a focus on operator pleasure
 

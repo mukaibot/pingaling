@@ -4,9 +4,11 @@ require 'json'
 
 module Actions
   class Endpoints
-    def get
+    def get(name = nil)
       gw = Gateway.new
-      result = JSON.parse(gw.get_endpoints.body)
+
+      response = name ? gw.get_endpoint(name) : gw.get_endpoints
+      result = JSON.parse(response.body)
       table = TTY::Table.new(headers, parse_results(result))
       puts TTY::Table::Renderer::Basic.new(table, padding: padding).render
     end
@@ -18,11 +20,19 @@ module Actions
     end
 
     def parse_results(results)
-      results.map { |r| r.values_at('name', 'status', 'path') }
+      to_collection(results).map { |r| r.values_at('name', 'status', 'path') }
     end
 
     def padding
       [0, 3, 0, 0]
+    end
+
+    def to_collection(thing)
+      if Hash === thing
+        [thing]
+      else
+        thing
+      end
     end
   end
 end

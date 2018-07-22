@@ -11,9 +11,9 @@ class Endpoint
       %w(/healthz /heartbeat /diagnostic/status/heartbeat).sample
     end
 
-    def random
+    def random(name = nil)
       {
-        name: rando_name,
+        name: name || rando_name,
         status: %w(OK FAILED).sample,
         path: rando_path
       }
