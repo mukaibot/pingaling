@@ -5,9 +5,9 @@ defmodule ApiWeb.EndpointControllerTest do
 
   @create_attrs %{
     description: "some description",
-    name: "some name",
+    name: "some-name",
     next_check: ~N[2010-04-17 14:00:00.000000],
-    url: "some url"
+    url: "http://my-service/healthz"
   }
 
   def fixture(:endpoint) do
@@ -27,24 +27,16 @@ defmodule ApiWeb.EndpointControllerTest do
   end
 
   describe "show" do
-    test "gets a specific endpoint", %{conn: conn} do
+    test "gets a specific endpoint by name", %{conn: conn} do
       endpoint = create_endpoint("")
-      {
-        :ok,
-        [
-          endpoint: %{
-            id: id
-          }
-        ]
-      } = endpoint
+      { :ok, [ endpoint: %{ name: name } ] } = endpoint
 
-      conn = get conn, endpoint_path(conn, :show, id)
+      conn = get conn, endpoint_path(conn, :show, name)
       assert json_response(conn, 200)["data"] == %{
-               "name" => "some name",
-               "id" => id,
+               "name" => "some-name",
                "description" => "some description",
                "next_check" => "2010-04-17T14:00:00.000000",
-               "url" => "some url"
+               "url" => "http://my-service/healthz"
              }
     end
   end

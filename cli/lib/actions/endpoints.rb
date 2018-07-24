@@ -20,7 +20,7 @@ module Actions
     end
 
     def parse_results(results)
-      to_collection(results).map { |r| r.values_at('name', 'status', 'path') }
+      to_collection(results.fetch('data', [])).map { |r| r.values_at('name', 'status', 'url') }
     end
 
     def padding

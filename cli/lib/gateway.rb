@@ -2,7 +2,7 @@ require 'http'
 
 class Gateway
   def initialize
-    @host = 'http://localhost:4567'
+    @host = 'http://localhost:4000/api'
   end
 
   def describe_endpoint(name)
@@ -11,12 +11,12 @@ class Gateway
   end
 
   def get_endpoint(name)
-    response = HTTP.get(@host + '/get/endpoints/' + name)
+    response = HTTP.get(@host + '/endpoints/' + name)
     response.code == 200 ? response : raise(ApiUnavailableError.new(@host))
   end
 
   def get_endpoints
-    response = HTTP.get(@host + '/get/endpoints')
+    response = HTTP.get(@host + '/endpoints')
     response.code == 200 ? response : raise(ApiUnavailableError.new(@host))
   end
 

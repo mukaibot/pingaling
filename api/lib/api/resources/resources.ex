@@ -35,7 +35,10 @@ defmodule Api.Resources do
       ** (Ecto.NoResultsError)
 
   """
-  def get_endpoint!(id), do: Repo.get!(Endpoint, id)
+  def get_endpoint!(name) do
+#    Repo.get!(Endpoint, name)
+    Repo.get_by!(Endpoint, name: name)
+  end
 
   @doc """
   Creates a endpoint.

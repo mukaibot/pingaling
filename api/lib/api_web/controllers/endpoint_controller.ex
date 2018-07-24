@@ -11,8 +11,8 @@ defmodule ApiWeb.EndpointController do
     render(conn, "index.json", endpoints: endpoints)
   end
 
-  def show(conn, %{"id" => id}) do
-    endpoint = Resources.get_endpoint!(id)
+  def show(conn, %{"name" => name}) do
+    endpoint = Resources.get_endpoint!(name)
     render(conn, "show.json", endpoint: endpoint)
   end
 end

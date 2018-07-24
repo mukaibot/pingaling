@@ -24,9 +24,9 @@ defmodule Api.ResourcesTest do
       assert Resources.list_endpoints() == [endpoint]
     end
 
-    test "get_endpoint!/1 returns the endpoint with given id" do
+    test "get_endpoint!/1 returns the endpoint with given name" do
       endpoint = endpoint_fixture()
-      assert Resources.get_endpoint!(endpoint.id) == endpoint
+      assert Resources.get_endpoint!(endpoint.name) == endpoint
     end
 
     test "create_endpoint/1 with valid data creates a endpoint" do
@@ -54,13 +54,13 @@ defmodule Api.ResourcesTest do
     test "update_endpoint/2 with invalid data returns error changeset" do
       endpoint = endpoint_fixture()
       assert {:error, %Ecto.Changeset{}} = Resources.update_endpoint(endpoint, @invalid_attrs)
-      assert endpoint == Resources.get_endpoint!(endpoint.id)
+      assert endpoint == Resources.get_endpoint!(endpoint.name)
     end
 
     test "delete_endpoint/1 deletes the endpoint" do
       endpoint = endpoint_fixture()
       assert {:ok, %Endpoint{}} = Resources.delete_endpoint(endpoint)
-      assert_raise Ecto.NoResultsError, fn -> Resources.get_endpoint!(endpoint.id) end
+      assert_raise Ecto.NoResultsError, fn -> Resources.get_endpoint!(endpoint.name) end
     end
 
     test "change_endpoint/1 returns a endpoint changeset" do
