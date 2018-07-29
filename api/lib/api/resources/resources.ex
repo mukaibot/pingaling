@@ -104,4 +104,8 @@ defmodule Api.Resources do
   def change_endpoint(%Endpoint{} = endpoint) do
     Endpoint.changeset(endpoint, %{})
   end
+
+  def get_endpoint(name) do
+    Repo.one(Endpoint, name: name)
+  end
 end

@@ -29,13 +29,21 @@ defmodule ApiWeb.EndpointControllerTest do
   describe "show" do
     test "gets a specific endpoint by name", %{conn: conn} do
       endpoint = create_endpoint("")
-      { :ok, [ endpoint: %{ name: name } ] } = endpoint
+      {
+        :ok,
+        [
+          endpoint: %{
+            name: name
+          }
+        ]
+      } = endpoint
 
       conn = get conn, endpoint_path(conn, :show, name)
       assert json_response(conn, 200)["data"] == %{
                "name" => "some-name",
                "description" => "some description",
                "next_check" => "2010-04-17T14:00:00.000000",
+               "status" => "ok",
                "url" => "http://my-service/healthz"
              }
     end

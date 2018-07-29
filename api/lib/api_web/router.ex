@@ -9,5 +9,6 @@ defmodule ApiWeb.Router do
     pipe_through :api
     resources "/endpoints", EndpointController, only: [:index]
     get "/endpoints/:name", EndpointController, :show
+    post "/manifest", ManifestController, :apply
   end
 end
