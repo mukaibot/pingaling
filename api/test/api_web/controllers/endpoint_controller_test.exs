@@ -1,5 +1,7 @@
 defmodule ApiWeb.EndpointControllerTest do
-  use ApiWeb.ConnCase
+  use ApiWeb.ConnCase do
+    import Api.Factory
+  end
 
   alias Api.Resources
 
@@ -21,8 +23,10 @@ defmodule ApiWeb.EndpointControllerTest do
 
   describe "index" do
     test "lists all endpoints", %{conn: conn} do
+      insert(:endpoint)
+      insert(:endpoint)
       conn = get conn, endpoint_path(conn, :index)
-      assert json_response(conn, 200)["data"] == []
+      assert json_response(conn, 200)["data"] |> Enum.count >= 2
     end
   end
 

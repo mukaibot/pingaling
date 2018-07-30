@@ -2,6 +2,6 @@
 apiVersion: 1
 kind: checks/endpoint
 spec:
-  name: awesome-service
-  url: http://my-service.svc.cluster.local
-  description: What a cool service
+  name: widget-throbbler
+  url: https://google.com.au
+  description: Actually has external service
