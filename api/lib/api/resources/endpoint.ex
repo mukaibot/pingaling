@@ -6,10 +6,10 @@ defmodule Api.Resources.Endpoint do
   schema "endpoints" do
     field :description, :string
     field :name, :string
-    field :next_check, :naive_datetime
+    field :next_check, :utc_datetime
     field :url, :string
 
-    timestamps()
+    timestamps(type: :utc_datetime)
   end
 
   @doc false

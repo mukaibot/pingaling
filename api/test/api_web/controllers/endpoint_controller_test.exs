@@ -8,12 +8,12 @@ defmodule ApiWeb.EndpointControllerTest do
   @create_attrs %{
     description: "some description",
     name: "some-name",
-    next_check: ~N[2010-04-17 14:00:00.000000],
     url: "http://my-service/healthz"
   }
 
   def fixture(:endpoint) do
-    {:ok, endpoint} = Resources.create_endpoint(@create_attrs)
+    {:ok, date, 0 } = DateTime.from_iso8601("2010-04-17T14:00:00.0Z")
+    {:ok, endpoint} = Resources.create_endpoint(Map.merge(@create_attrs, %{next_check: date}))
     endpoint
   end
 
@@ -46,7 +46,7 @@ defmodule ApiWeb.EndpointControllerTest do
       assert json_response(conn, 200)["data"] == %{
                "name" => "some-name",
                "description" => "some description",
-               "next_check" => "2010-04-17T14:00:00.000000",
+               "next_check" => "2010-04-17T14:00:00.000000Z",
                "status" => "ok",
                "url" => "http://my-service/healthz"
              }

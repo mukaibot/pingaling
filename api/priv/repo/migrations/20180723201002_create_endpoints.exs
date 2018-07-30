@@ -6,9 +6,9 @@ defmodule Api.Repo.Migrations.CreateEndpoints do
       add :name, :string, null: false
       add :url, :string, null: false
       add :description, :text
-      add :next_check, :naive_datetime
+      add :next_check, :timestamptz
 
-      timestamps()
+      timestamps(type: :timestamptz)
     end
 
     create unique_index(:endpoints, [:name])
