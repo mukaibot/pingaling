@@ -36,7 +36,6 @@ defmodule Api.Resources do
 
   """
   def get_endpoint!(name) do
-#    Repo.get!(Endpoint, name)
     Repo.get_by!(Endpoint, name: name)
   end
 
@@ -106,6 +105,6 @@ defmodule Api.Resources do
   end
 
   def get_endpoint(name) do
-    Repo.one(Endpoint, name: name)
+    Repo.get_by(Endpoint, name: name)
   end
 end

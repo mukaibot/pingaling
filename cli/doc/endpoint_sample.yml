@@ -2,6 +2,6 @@
 apiVersion: 1
 kind: checks/endpoint
 spec:
-  name: widget-throbbler
+  name: dingbat-fluffer
   url: https://google.com.au
   description: Actually has external service
