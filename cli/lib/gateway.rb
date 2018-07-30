@@ -21,7 +21,7 @@ class Gateway
   end
 
   def post_manifest(json)
-    HTTP.post(@host + '/manifest', json: json)
+    HTTP.post(@host + '/manifest', json: { manifest: json })
   end
 
   class ApiUnavailableError < StandardError

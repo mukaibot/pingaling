@@ -5,11 +5,13 @@ defmodule ApiWeb.ManifestController do
 
   action_fallback ApiWeb.FallbackController
 
-  def apply(conn, %{ "manifest" => params}) do
-    status = Manifest.apply(params)
+  def apply(conn, %{"manifest" => params}) do
+    result = Manifest.apply(params)
+
+    {status, _} = result
 
     conn
-    |> put_status(status.status)
-    |> render("apply.json", status)
+    |> put_status(status)
+    |> render("apply.json", %{result: result})
   end
 end

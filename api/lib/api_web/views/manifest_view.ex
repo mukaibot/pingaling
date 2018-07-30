@@ -2,15 +2,15 @@ defmodule ApiWeb.ManifestView do
   use ApiWeb, :view
   alias ApiWeb.EndpointView
 
-  def render("apply.json", %{status: :ok, resource: resource}) do
+  def render("apply.json", %{result: {:ok, resource}}) do
     EndpointView.render("endpoint.json", %{endpoint: resource})
   end
 
-  def render("apply.json", %{status: :created, resource: resource}) do
+  def render("apply.json", %{result: {:created, resource}}) do
     EndpointView.render("endpoint.json", %{endpoint: resource})
   end
 
-  def render("apply.json", %{status: :failure}) do
-    %{result: "Something went wrong"}
+  def render("apply.json", %{result: {:bad_request, message}}) do
+    message
   end
 end
