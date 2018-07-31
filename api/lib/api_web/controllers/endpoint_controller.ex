@@ -1,6 +1,8 @@
 defmodule ApiWeb.EndpointController do
   use ApiWeb, :controller
 
+  require Logger
+
   alias Api.Resources
   alias Api.Resources.Endpoint
 

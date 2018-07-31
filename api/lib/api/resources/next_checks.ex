@@ -12,7 +12,7 @@ defmodule Api.Resources.NextChecks do
     query = from ep in "endpoints",
       where: is_nil(ep.next_check),
       or_where: ep.next_check < fragment("now()"),
-      select: ep.name
+      select: {ep.name, ep.id, ep.url}
 
     Repo.all(query)
   end

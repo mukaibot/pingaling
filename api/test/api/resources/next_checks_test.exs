@@ -1,4 +1,4 @@
-defmodule Api.NextChecksTest do
+defmodule Api.Resources.NextChecksTest do
   use Api.DataCase
   import Api.Factory
   alias Api.Resources.NextChecks
@@ -7,14 +7,14 @@ defmodule Api.NextChecksTest do
     test "it fetches endpoints with a null next_check" do
       ep = insert(:endpoint)
 
-      assert NextChecks.find() == [ep.name]
+      assert NextChecks.find() == [{ep.name, ep.id, ep.url}]
     end
 
     test "it fetches endpoints with an overdue next check" do
       {:ok, date, 0} = DateTime.from_iso8601("2010-04-17 14:00:00.000000Z")
       ep = insert(:endpoint, %{next_check: date})
 
-      assert NextChecks.find() == [ep.name]
+      assert NextChecks.find() == [{ep.name, ep.id, ep.url}]
     end
 
     test "it does not include endpoints in the future" do

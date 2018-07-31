@@ -6,6 +6,9 @@ defmodule Api.Application do
   def start(_type, _args) do
     import Supervisor.Spec
 
+    Application.ensure_all_started(:inets)
+    Application.ensure_all_started(:ssl)
+
     # Define workers and child supervisors to be supervised
     children = [
       # Start the Ecto repository
@@ -14,6 +17,7 @@ defmodule Api.Application do
       supervisor(ApiWeb.Endpoint, []),
       # Start your own worker by calling: Api.Worker.start_link(arg1, arg2, arg3)
       # worker(Api.Worker, [arg1, arg2, arg3]),
+      supervisor(Api.Checker, [])
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
