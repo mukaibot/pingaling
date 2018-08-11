@@ -7,6 +7,7 @@ defmodule Api.Resources do
   alias Api.Repo
 
   alias Api.Resources.Endpoint
+  alias Api.Resources.HealthStatus
 
   @doc """
   Returns the list of endpoints.
@@ -54,6 +55,12 @@ defmodule Api.Resources do
   def create_endpoint(attrs \\ %{}) do
     %Endpoint{}
     |> Endpoint.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def create_pending_health_status(id, type) do
+    %HealthStatus{}
+    |> HealthStatus.changeset(%{status: :pending, endpoint: id})
     |> Repo.insert()
   end
 

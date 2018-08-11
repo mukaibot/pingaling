@@ -1,15 +1,50 @@
 # Script for populating the database. You can run it as:
 #
 #     mix run priv/repo/seeds.exs
-Api.Repo.insert!(%Api.Resources.Endpoint{
-  name: "my-service",
-  url: "http://my-service/healthz"
-})
-Api.Repo.insert!(%Api.Resources.Endpoint{
-  name: "widget-service",
-  url: "http://widget-service/heartbeat"
-})
-Api.Repo.insert!(%Api.Resources.Endpoint{
-  name: "dingbat-throbbler",
-  url: "http://dingbat-throbbler/diagnostic/status/heartbeat"
-})
+alias Api.Resources
+alias Api.Repo
+
+Repo.transaction fn ->
+  Repo.insert!(
+    %Api.Resources.Endpoint{
+      name: "my-service",
+      url: "http://my-service/healthz"
+    }
+  )
+  Repo.insert!(
+    %Api.Resources.HealthStatus{
+      status: :pending,
+      endpoint: Resources.get_endpoint!("my-service")
+    }
+  )
+end
+
+Repo.transaction fn ->
+  Repo.insert!(
+    %Api.Resources.Endpoint{
+      name: "widget-aligner",
+      url: "https://google.com.au"
+    }
+  )
+  Repo.insert!(
+    %Api.Resources.HealthStatus{
+      status: :pending,
+      endpoint: Resources.get_endpoint!("widget-aligner")
+    }
+  )
+end
+
+Repo.transaction fn ->
+  Repo.insert!(
+    %Api.Resources.Endpoint{
+      name: "foobar-throbbler",
+      url: "http://google.com.au"
+    }
+  )
+  Repo.insert!(
+    %Api.Resources.HealthStatus{
+      status: :pending,
+      endpoint: Resources.get_endpoint!("foobar-throbbler")
+    }
+  )
+end
