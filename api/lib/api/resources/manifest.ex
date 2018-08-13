@@ -12,8 +12,6 @@ defmodule Api.Resources.Manifest do
 
         status = if endpoint == nil do
           Resources.create_endpoint(params["spec"])
-          endpoint = Resources.get_endpoint!(params["spec"]["name"])
-          Resources.create_pending_health_status(endpoint.id, :endpoint)
           :created
         else
           Resources.update_endpoint(endpoint, params["spec"])

@@ -9,7 +9,7 @@ defmodule Api.Resources.Endpoint do
     field :name, :string
     field :next_check, :utc_datetime
     field :url, :string
-    has_many :health_statuses, HealthStatus
+    has_many :health_statuses, HealthStatus, on_delete: :delete_all
 
     timestamps(type: :utc_datetime)
   end

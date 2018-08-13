@@ -55,6 +55,7 @@ defmodule Api.Resources do
   def create_endpoint(attrs \\ %{}) do
     %Endpoint{}
     |> Endpoint.changeset(attrs)
+    |> Ecto.Changeset.put_assoc(:health_statuses, [%{status: :pending}])
     |> Repo.insert()
   end
 

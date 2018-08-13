@@ -1,5 +1,6 @@
 defmodule Api.ResourcesTest do
   use Api.DataCase
+  import Api.Factory
 
   alias Api.Resources
 
@@ -21,13 +22,14 @@ defmodule Api.ResourcesTest do
     end
 
     test "list_endpoints/0 returns all endpoints" do
-      endpoint = endpoint_fixture()
-      assert Resources.list_endpoints() == [endpoint]
+      endpoint = insert(:endpoint)
+      [first | rest] = Resources.list_endpoints()
+      assert first.id == endpoint.id
     end
 
     test "get_endpoint!/1 returns the endpoint with given name" do
-      endpoint = endpoint_fixture()
-      assert Resources.get_endpoint!(endpoint.name) == endpoint
+      endpoint = insert(:endpoint)
+      assert Resources.get_endpoint!(endpoint.name).id == endpoint.id
     end
 
     test "create_endpoint/1 with valid data creates a endpoint" do
@@ -55,14 +57,17 @@ defmodule Api.ResourcesTest do
     end
 
     test "update_endpoint/2 with invalid data returns error changeset" do
-      endpoint = endpoint_fixture()
+      insert(:endpoint)
+      endpoint = Repo.one(Endpoint)
       assert {:error, %Ecto.Changeset{}} = Resources.update_endpoint(endpoint, @invalid_attrs)
       assert endpoint == Resources.get_endpoint!(endpoint.name)
     end
 
-    test "delete_endpoint/1 deletes the endpoint" do
-      endpoint = endpoint_fixture()
+    test "delete_endpoint/1 deletes the endpoint and health statuses" do
+      endpoint = insert(:endpoint)
+      assert 1 == Repo.one(from hs in "health_statuses", select: count(hs.id))
       assert {:ok, %Endpoint{}} = Resources.delete_endpoint(endpoint)
+      assert 0 == Repo.one(from hs in "health_statuses", select: count(hs.id))
       assert_raise Ecto.NoResultsError, fn -> Resources.get_endpoint!(endpoint.name) end
     end
 
