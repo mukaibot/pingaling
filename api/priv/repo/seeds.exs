@@ -7,14 +7,14 @@ alias Api.Repo
 Repo.transaction fn ->
   Repo.insert!(
     %Api.Resources.Endpoint{
-      name: "my-service",
+      name: "dingbat-poker",
       url: "http://my-service/healthz"
     }
   )
   Repo.insert!(
     %Api.Resources.HealthStatus{
       status: :pending,
-      endpoint: Resources.get_endpoint!("my-service")
+      endpoint: Resources.get_endpoint!("dingbat-poker")
     }
   )
 end

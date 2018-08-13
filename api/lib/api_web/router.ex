@@ -8,6 +8,7 @@ defmodule ApiWeb.Router do
   scope "/api", ApiWeb do
     pipe_through :api
     resources "/endpoints", EndpointController, only: [:index]
+    get "/health/summary", HealthSummaryController, :index
     get "/endpoints/:name", EndpointController, :show
     post "/manifest", ManifestController, :apply
   end

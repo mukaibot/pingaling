@@ -5,9 +5,9 @@ defmodule Api.Repo.Migrations.CreateHealthStatuses do
     HealthStatusEnum.create_type
     CheckTypeEnum.create_type
     create table(:health_statuses) do
-      add :status, :health_status
-      add :type, :check_type
-      add :endpoint_id, references(:endpoints)
+      add :status, :health_status, null: false
+      add :type, :check_type, null: false
+      add :endpoint_id, references(:endpoints, on_delete: :delete_all), null: false
 
       timestamps()
     end

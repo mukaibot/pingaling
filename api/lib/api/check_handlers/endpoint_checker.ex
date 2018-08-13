@@ -1,6 +1,8 @@
 defmodule Api.CheckHandlers.EndpointChecker do
   @moduledoc false
 
+  alias Api.CheckHandlers.SuccessHandler
+
   require Logger
 
   def check({name, id, url}) do
@@ -10,7 +12,8 @@ defmodule Api.CheckHandlers.EndpointChecker do
     handle_result(check_result, name, id)
   end
 
-  defp handle_result({:ok, {{'HTTP/1.1', 200, 'OK'}, _headers, _body}}, name, _id) do
+  defp handle_result({:ok, {{'HTTP/1.1', 200, 'OK'}, _headers, _body}}, name, id) do
+    SuccessHandler.handle(id)
     Logger.debug("OK #{name}")
   end
 

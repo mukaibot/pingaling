@@ -94,9 +94,9 @@ ALTER SEQUENCE public.endpoints_id_seq OWNED BY public.endpoints.id;
 
 CREATE TABLE public.health_statuses (
     id bigint NOT NULL,
-    status public.health_status,
-    type public.check_type,
-    endpoint_id bigint,
+    status public.health_status NOT NULL,
+    type public.check_type NOT NULL,
+    endpoint_id bigint NOT NULL,
     inserted_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -181,7 +181,7 @@ CREATE UNIQUE INDEX endpoints_name_index ON public.endpoints USING btree (name);
 --
 
 ALTER TABLE ONLY public.health_statuses
-    ADD CONSTRAINT health_statuses_endpoint_id_fkey FOREIGN KEY (endpoint_id) REFERENCES public.endpoints(id);
+    ADD CONSTRAINT health_statuses_endpoint_id_fkey FOREIGN KEY (endpoint_id) REFERENCES public.endpoints(id) ON DELETE CASCADE;
 
 
 --
