@@ -23,7 +23,7 @@ defmodule Api.ResourcesTest do
 
     test "list_endpoints/0 returns all endpoints" do
       endpoint = insert(:endpoint)
-      [first | rest] = Resources.list_endpoints()
+      [first | _] = Resources.list_endpoints()
       assert first.id == endpoint.id
     end
 

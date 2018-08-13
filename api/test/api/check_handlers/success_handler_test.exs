@@ -3,8 +3,6 @@ defmodule Api.CheckHandlers.SuccessHandlerTest do
   import Api.Factory
   alias Api.Repo
   alias Api.CheckHandlers.SuccessHandler
-  alias Api.Resources
-  alias Api.Resources.Endpoint
   alias Api.Resources.HealthStatus
 
   describe "success handler" do

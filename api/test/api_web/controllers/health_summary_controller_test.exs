@@ -3,8 +3,6 @@ defmodule ApiWeb.HealthSummaryControllerTest do
     import Api.Factory
   end
 
-  alias Api.Resources
-
   setup %{conn: conn} do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
   end
@@ -12,7 +10,7 @@ defmodule ApiWeb.HealthSummaryControllerTest do
   describe "index" do
     test "gets the complete summary", %{conn: conn} do
       endpoints = insert_pair(:endpoint)
-      [head | tail] = endpoints
+      [head | _] = endpoints
       insert(:health_status, %{endpoint: head})
 
       conn = get conn, health_summary_path(conn, :index)

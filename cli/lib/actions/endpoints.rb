@@ -7,7 +7,7 @@ module Actions
     def get(name = nil)
       gw = Gateway.new
 
-      response = name ? gw.get_endpoint(name) : gw.get_endpoints
+      response = name ? gw.get_endpoint(name) : gw.get_health_summary
       result = JSON.parse(response.body)
       table = TTY::Table.new(headers, parse_results(result))
       puts TTY::Table::Renderer::Basic.new(table, padding: padding).render

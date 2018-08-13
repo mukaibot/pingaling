@@ -6,21 +6,28 @@ defmodule Api.Resources.HealthSummariser do
   import Ecto.Query, warn: false
   alias Api.Repo
 
-  alias Api.Resources.Endpoint
-  alias Api.Resources.HealthStatus
+  alias Api.Resources.EndpointHealthStatus
 
+    @query ~S"""
+    SELECT
+      name,
+      status,
+      most_recent_health_status.type,
+      most_recent_health_status.inserted_at
+    FROM endpoints
+    JOIN (
+      SELECT DISTINCT ON (endpoint_id)
+        endpoint_id,
+        status,
+        type,
+        inserted_at
+      FROM health_statuses
+      ORDER BY endpoint_id, inserted_at DESC
+    ) as most_recent_health_status
+    ON most_recent_health_status.endpoint_id = endpoints.id
+    """
   def find() do
-    query = from ep in Endpoint,
-                 join: health_statuses in HealthStatus,
-                 on: health_statuses.endpoint_id == ep.id,
-                 select: %{
-                   :name => ep.name,
-                   :status => health_statuses.status,
-                   :type => health_statuses.type,
-                   :updated_at => health_statuses.updated_at
-                 },
-                 order_by: health_statuses.updated_at
-
-    Repo.all(query)
+    result = Ecto.Adapters.SQL.query!(Repo, @query, [])
+    Enum.map(result.rows, &Repo.load(EndpointHealthStatus, {result.columns, &1}))
   end
 end

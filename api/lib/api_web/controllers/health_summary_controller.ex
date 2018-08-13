@@ -3,7 +3,6 @@ defmodule ApiWeb.HealthSummaryController do
 
   require Logger
 
-  alias Api.Resources
   alias Api.Resources.HealthSummariser
 
   action_fallback ApiWeb.FallbackController
