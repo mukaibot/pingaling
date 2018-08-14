@@ -1,4 +1,4 @@
-defmodule Api.CheckHandlers.SuccessHandler do
+defmodule Api.CheckHandlers.FailureHandler do
   @moduledoc false
 
   alias Api.Resources.HealthStatus
@@ -6,7 +6,7 @@ defmodule Api.CheckHandlers.SuccessHandler do
 
   def handle(endpoint) do
     %HealthStatus{}
-    |> HealthStatus.changeset(%{status: :healthy, endpoint: endpoint})
+    |> HealthStatus.changeset(%{status: :unhealthy, endpoint: endpoint})
     |> Repo.insert!()
   end
 end

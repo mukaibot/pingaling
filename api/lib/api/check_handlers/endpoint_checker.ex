@@ -2,22 +2,24 @@ defmodule Api.CheckHandlers.EndpointChecker do
   @moduledoc false
 
   alias Api.CheckHandlers.SuccessHandler
+  alias Api.CheckHandlers.FailureHandler
 
   require Logger
 
-  def check({name, id, url}) do
-    Logger.debug("Pinging #{name} (id=#{id}) on #{url}")
-    check_result = :httpc.request(to_charlist url)
+  def check(endpoint) do
+    Logger.debug("Pinging #{endpoint.name} (id=#{endpoint.id}) on #{endpoint.url}")
+    check_result = :httpc.request(to_charlist endpoint.url)
 
-    handle_result(check_result, name, id)
+    handle_result(check_result, endpoint)
   end
 
-  defp handle_result({:ok, {{'HTTP/1.1', 200, 'OK'}, _headers, _body}}, name, id) do
-    SuccessHandler.handle(id)
-    Logger.debug("OK #{name}")
+  defp handle_result({:ok, {{'HTTP/1.1', 200, 'OK'}, _headers, _body}}, endpoint) do
+    SuccessHandler.handle(endpoint)
+    Logger.debug("OK #{endpoint.name}")
   end
 
-  defp handle_result({:error, {:failed_connect, _params}}, name, _id) do
-    Logger.debug("FAIL #{name}")
+  defp handle_result({:error, {:failed_connect, _params}}, endpoint) do
+    FailureHandler.handle(endpoint)
+    Logger.debug("FAIL #{endpoint.name}")
   end
 end

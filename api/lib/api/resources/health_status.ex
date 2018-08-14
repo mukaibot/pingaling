@@ -15,22 +15,9 @@ defmodule Api.Resources.HealthStatus do
   @doc false
   def changeset(health_status, attrs) do
     health_status
-    |> cast(attrs, [:status, :endpoint_id])
+    |> cast(attrs, [:status])
+    |> put_assoc(:endpoint, attrs.endpoint)
     |> validate_required([:status])
     |> foreign_key_constraint(:endpoint_id)
-#    |> validate_exactly_one_check(:endpoint_id)
-  end
-
-  defp validate_exactly_one_check(changeset, field, options \\ []) do
-    validate_change(
-      changeset,
-      field,
-      fn :endpoint_id, term ->
-        case is_nil term do
-          true -> [{:endpoint_id, options[:message] || "Must have endpoint_id"}]
-          false -> []
-        end
-      end
-    )
   end
 end

@@ -6,15 +6,18 @@ defmodule Api.Resources.NextChecksTest do
   describe "endpoints" do
     test "it fetches endpoints with a null next_check" do
       ep = insert(:endpoint)
+      next_check = List.first(NextChecks.find())
 
-      assert NextChecks.find() == [{ep.name, ep.id, ep.url}]
+      assert next_check.name == ep.name
     end
 
     test "it fetches endpoints with an overdue next check" do
       {:ok, date, 0} = DateTime.from_iso8601("2010-04-17 14:00:00.000000Z")
       ep = insert(:endpoint, %{next_check: date})
 
-      assert NextChecks.find() == [{ep.name, ep.id, ep.url}]
+      next_check = List.first(NextChecks.find())
+
+      assert next_check.name == ep.name
     end
 
     test "it does not include endpoints in the future" do

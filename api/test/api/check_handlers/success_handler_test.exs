@@ -9,7 +9,7 @@ defmodule Api.CheckHandlers.SuccessHandlerTest do
     test "it creates a :healthy health status" do
       ep_fact = insert(:endpoint)
 
-      SuccessHandler.handle(ep_fact.id)
+      SuccessHandler.handle(ep_fact)
 
       last_health_status = Repo.one(
         from hs in HealthStatus,
