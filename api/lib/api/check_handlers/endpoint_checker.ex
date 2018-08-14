@@ -3,12 +3,14 @@ defmodule Api.CheckHandlers.EndpointChecker do
 
   alias Api.CheckHandlers.SuccessHandler
   alias Api.CheckHandlers.FailureHandler
+  alias Api.Resources.NextChecks
 
   require Logger
 
   def check(endpoint) do
     Logger.debug("Pinging #{endpoint.name} (id=#{endpoint.id}) on #{endpoint.url}")
     check_result = :httpc.request(to_charlist endpoint.url)
+    NextChecks.set(endpoint)
 
     handle_result(check_result, endpoint)
   end

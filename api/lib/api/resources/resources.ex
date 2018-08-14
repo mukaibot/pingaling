@@ -61,7 +61,7 @@ defmodule Api.Resources do
 
   def create_pending_health_status(id, type) do
     %HealthStatus{}
-    |> HealthStatus.changeset(%{status: :pending, endpoint: id})
+    |> HealthStatus.changeset(%{status: :pending, endpoint: id, type: type})
     |> Repo.insert()
   end
 
