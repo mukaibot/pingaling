@@ -3,6 +3,7 @@ apiVersion: 1
 kind: checks/endpoint
 spec:
   name: dingbat-fluffer
-  url: https://google.com.au
+  url: https://google.com.au.uhetonue
   description: Actually has external service
   interval: 45
+  retries: 3

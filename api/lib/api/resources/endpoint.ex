@@ -10,6 +10,7 @@ defmodule Api.Resources.Endpoint do
     field :next_check, :utc_datetime
     field :url, :string
     field :interval, :integer
+    field :retries, :integer
     has_many :health_statuses, HealthStatus, on_delete: :delete_all
 
     timestamps(type: :utc_datetime)
@@ -18,7 +19,17 @@ defmodule Api.Resources.Endpoint do
   @doc false
   def changeset(endpoint, attrs) do
     endpoint
-    |> cast(attrs, [:name, :url, :description, :next_check, :interval])
+    |> cast(
+         attrs,
+         [
+           :description,
+           :interval,
+           :name,
+           :next_check,
+           :retries,
+           :url
+         ]
+       )
     |> validate_required([:name, :url])
     |> unique_constraint(:name)
   end
