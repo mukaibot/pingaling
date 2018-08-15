@@ -5,3 +5,4 @@ spec:
   name: dingbat-fluffer
   url: https://google.com.au
   description: Actually has external service
+  interval: 45
