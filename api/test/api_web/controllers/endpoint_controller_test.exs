@@ -1,8 +1,5 @@
 defmodule ApiWeb.EndpointControllerTest do
-  use ApiWeb.ConnCase do
-    import Api.Factory
-  end
-
+  use ApiWeb.ConnCase
   alias Api.Resources
 
   @create_attrs %{
@@ -19,16 +16,6 @@ defmodule ApiWeb.EndpointControllerTest do
 
   setup %{conn: conn} do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
-  end
-
-  describe "index" do
-    test "lists all endpoints", %{conn: conn} do
-      insert_pair(:endpoint)
-
-      conn = get conn, endpoint_path(conn, :index)
-
-      assert json_response(conn, 200)["data"] |> Enum.count >= 2
-    end
   end
 
   describe "show" do
