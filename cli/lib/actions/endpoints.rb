@@ -16,7 +16,7 @@ module Actions
     private
 
     def headers
-      ['ENDPOINT', 'STATUS', 'PATH']
+      ['ENDPOINT', 'STATUS', 'URL']
     end
 
     def parse_results(results)

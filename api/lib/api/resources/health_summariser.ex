@@ -15,6 +15,7 @@ defmodule Api.Resources.HealthSummariser do
     name,
     status,
     most_recent_health_status.type,
+    url,
     most_recent_health_status.inserted_at
   FROM endpoints
   JOIN (

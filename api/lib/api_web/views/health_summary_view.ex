@@ -15,7 +15,8 @@ defmodule ApiWeb.HealthSummaryView do
       name: health_summary.name,
       status: health_summary.status,
       type: health_summary.type,
-      updated: health_summary.updated_at
+      updated: health_summary.updated_at,
+      url: health_summary.url
     }
   end
 end
