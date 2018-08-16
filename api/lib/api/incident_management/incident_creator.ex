@@ -44,9 +44,7 @@ defmodule Api.IncidentManagement.IncidentCreator do
            select: count(i.id)
          ) do
       0 ->
-        Logger.debug("******")
         Logger.debug("Creating incident for #{endpoint.name}")
-        Logger.debug("******")
 
         %Incident{}
         |> Incident.changeset(%{status: :open})
@@ -54,11 +52,7 @@ defmodule Api.IncidentManagement.IncidentCreator do
         |> Repo.insert()
 
       1 ->
-        Logger.debug("")
-        Logger.debug("******")
         Logger.debug("Incident already open for #{endpoint.name}")
-        Logger.debug("******")
-        Logger.debug("")
     end
   end
 end

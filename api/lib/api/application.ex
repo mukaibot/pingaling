@@ -19,7 +19,8 @@ defmodule Api.Application do
       # worker(Api.Worker, [arg1, arg2, arg3]),
 
       supervisor(Api.Checker, []),
-      supervisor(Api.IncidentManagement.IncidentCreator, [])
+      supervisor(Api.IncidentManagement.IncidentCreator, []),
+      supervisor(Api.IncidentManagement.IncidentAutoResolver, [])
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

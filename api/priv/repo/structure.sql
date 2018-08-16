@@ -58,7 +58,7 @@ CREATE TYPE public.incident_status AS ENUM (
     'open',
     'closed',
     'resolved',
-    'autoresolved'
+    'auto_resolved'
 );
 
 
