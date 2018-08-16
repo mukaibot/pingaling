@@ -9,7 +9,7 @@ defmodule Api.Resources.HealthStatus do
     field :type, CheckTypeEnum, default: :endpoint
     belongs_to :endpoint, Endpoint
 
-    timestamps()
+    timestamps(type: :utc_datetime)
   end
 
   @doc false

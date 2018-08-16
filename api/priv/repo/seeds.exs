@@ -17,6 +17,24 @@ Repo.transaction fn ->
       endpoint: Resources.get_endpoint!("dingbat-poker")
     }
   )
+  Repo.insert!(
+    %Api.Resources.HealthStatus{
+      status: :unhealthy,
+      endpoint: Resources.get_endpoint!("dingbat-poker")
+    }
+  )
+  Repo.insert!(
+    %Api.Resources.HealthStatus{
+      status: :unhealthy,
+      endpoint: Resources.get_endpoint!("dingbat-poker")
+    }
+  )
+  Repo.insert!(
+    %Api.Resources.HealthStatus{
+      status: :healthy,
+      endpoint: Resources.get_endpoint!("dingbat-poker")
+    }
+  )
 end
 
 Repo.transaction fn ->

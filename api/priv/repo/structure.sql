@@ -50,6 +50,18 @@ CREATE TYPE public.health_status AS ENUM (
 );
 
 
+--
+-- Name: incident_status; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.incident_status AS ENUM (
+    'open',
+    'closed',
+    'resolved',
+    'autoresolved'
+);
+
+
 SET default_tablespace = '';
 
 SET default_with_oids = false;
@@ -65,7 +77,11 @@ CREATE TABLE public.endpoints (
     description text,
     next_check timestamp with time zone,
     inserted_at timestamp with time zone NOT NULL,
-    updated_at timestamp with time zone NOT NULL
+    updated_at timestamp with time zone NOT NULL,
+    "interval" integer DEFAULT 30,
+    retries integer DEFAULT 2,
+    CONSTRAINT interval_must_be_positive CHECK (("interval" > 0)),
+    CONSTRAINT retries_must_be_positive CHECK ((retries >= 0))
 );
 
 
@@ -97,8 +113,8 @@ CREATE TABLE public.health_statuses (
     status public.health_status NOT NULL,
     type public.check_type NOT NULL,
     endpoint_id bigint NOT NULL,
-    inserted_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    inserted_at timestamp with time zone NOT NULL,
+    updated_at timestamp with time zone NOT NULL
 );
 
 
@@ -119,6 +135,38 @@ CREATE SEQUENCE public.health_statuses_id_seq
 --
 
 ALTER SEQUENCE public.health_statuses_id_seq OWNED BY public.health_statuses.id;
+
+
+--
+-- Name: incidents; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.incidents (
+    id bigint NOT NULL,
+    endpoint_id bigint NOT NULL,
+    status public.incident_status NOT NULL,
+    inserted_at timestamp with time zone NOT NULL,
+    updated_at timestamp with time zone NOT NULL
+);
+
+
+--
+-- Name: incidents_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.incidents_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: incidents_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.incidents_id_seq OWNED BY public.incidents.id;
 
 
 --
@@ -146,6 +194,13 @@ ALTER TABLE ONLY public.health_statuses ALTER COLUMN id SET DEFAULT nextval('pub
 
 
 --
+-- Name: incidents id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.incidents ALTER COLUMN id SET DEFAULT nextval('public.incidents_id_seq'::regclass);
+
+
+--
 -- Name: endpoints endpoints_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -159,6 +214,14 @@ ALTER TABLE ONLY public.endpoints
 
 ALTER TABLE ONLY public.health_statuses
     ADD CONSTRAINT health_statuses_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: incidents incidents_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.incidents
+    ADD CONSTRAINT incidents_pkey PRIMARY KEY (id);
 
 
 --
@@ -185,8 +248,16 @@ ALTER TABLE ONLY public.health_statuses
 
 
 --
+-- Name: incidents incidents_endpoint_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.incidents
+    ADD CONSTRAINT incidents_endpoint_id_fkey FOREIGN KEY (endpoint_id) REFERENCES public.endpoints(id);
+
+
+--
 -- PostgreSQL database dump complete
 --
 
-INSERT INTO public."schema_migrations" (version) VALUES (20180723201002), (20180811061147);
+INSERT INTO public."schema_migrations" (version) VALUES (20180723201002), (20180811061147), (20180814105520), (20180815073448), (20180815101537), (20180815101641);
 

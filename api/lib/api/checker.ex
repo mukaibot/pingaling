@@ -4,7 +4,7 @@ defmodule Api.Checker do
   alias Api.CheckHandlers.EndpointChecker
   require Logger
 
-  @check_every 3_000
+  @check_every 3_000 # seconds
 
   @doc """
   Start the checking loop

@@ -17,7 +17,9 @@ defmodule Api.Application do
       supervisor(ApiWeb.Endpoint, []),
       # Start your own worker by calling: Api.Worker.start_link(arg1, arg2, arg3)
       # worker(Api.Worker, [arg1, arg2, arg3]),
-      supervisor(Api.Checker, [])
+
+      supervisor(Api.Checker, []),
+      supervisor(Api.IncidentManagement.IncidentCreator, [])
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

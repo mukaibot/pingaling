@@ -9,7 +9,7 @@ defmodule Api.Repo.Migrations.CreateHealthStatuses do
       add :type, :check_type, null: false
       add :endpoint_id, references(:endpoints, on_delete: :delete_all), null: false
 
-      timestamps()
+      timestamps(type: :timestamptz)
     end
   end
 
