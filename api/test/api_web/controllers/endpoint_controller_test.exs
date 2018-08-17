@@ -35,7 +35,6 @@ defmodule ApiWeb.EndpointControllerTest do
                "name" => "some-name",
                "description" => "some description",
                "next_check" => "2010-04-17T14:00:00.000000Z",
-               "status" => "ok",
                "url" => "http://my-service/healthz"
              }
     end

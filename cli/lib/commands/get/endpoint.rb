@@ -1,4 +1,5 @@
 require 'commands/base'
+require 'actions/endpoints'
 
 module Commands
   module Get

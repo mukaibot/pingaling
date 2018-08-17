@@ -14,7 +14,16 @@ defmodule ApiWeb.EndpointView do
     %{
       name: endpoint.name,
       url: endpoint.url,
-      status: "ok",
+      description: endpoint.description,
+      next_check: endpoint.next_check
+    }
+  end
+
+  def render("endpoint.json", %{endpoint: endpoint, health_summary: health_summary}) do
+    %{
+      name: endpoint.name,
+      url: endpoint.url,
+      status: health_summary.status,
       description: endpoint.description,
       next_check: endpoint.next_check
     }

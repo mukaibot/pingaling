@@ -20,6 +20,11 @@ class Gateway
     response.code == 200 ? response : raise(ApiUnavailableError.new(@host))
   end
 
+  def get_incidents
+    response = HTTP.get(@host + '/incidents')
+    response.code == 200 ? response : raise(ApiUnavailableError.new(@host))
+  end
+
   def post_manifest(json)
     HTTP.post(@host + '/manifest', json: { manifest: json })
   end
