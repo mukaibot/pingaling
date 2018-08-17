@@ -9,7 +9,7 @@ defmodule ApiWeb.EndpointControllerTest do
   }
 
   def fixture(:endpoint) do
-    {:ok, date, 0 } = DateTime.from_iso8601("2010-04-17T14:00:00.0Z")
+    {:ok, date, 0} = DateTime.from_iso8601("2010-04-17T14:00:00.0Z")
     {:ok, endpoint} = Resources.create_endpoint(Map.merge(@create_attrs, %{next_check: date}))
     endpoint
   end
@@ -18,8 +18,8 @@ defmodule ApiWeb.EndpointControllerTest do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
   end
 
-  describe "show" do
-    test "gets a specific endpoint by name", %{conn: conn} do
+  describe "getting an endpoint" do
+    test "by name", %{conn: conn} do
       endpoint = create_endpoint("")
       {
         :ok,
@@ -30,7 +30,10 @@ defmodule ApiWeb.EndpointControllerTest do
         ]
       } = endpoint
 
-      conn = get conn, endpoint_path(conn, :show, name)
+      conn = conn
+             |> get(endpoint_path(conn, :show, name))
+             |> doc
+
       assert json_response(conn, 200)["data"] == %{
                "name" => "some-name",
                "description" => "some description",

@@ -33,14 +33,15 @@ defmodule Api.Mixfile do
   # Type `mix help deps` for examples and options.
   defp deps do
     [
-      {:phoenix, "~> 1.3.3"},
-      {:phoenix_pubsub, "~> 1.0"},
-      {:phoenix_ecto, "~> 3.2"},
-      {:postgrex, ">= 0.0.0"},
-      {:gettext, "~> 0.11"},
-      {:ecto_enum, "~> 1.0"},
+      {:bureaucrat, "~> 0.2.4"},
       {:cowboy, "~> 1.0"},
-      {:ex_machina, "~> 2.2"}
+      {:ecto_enum, "~> 1.0"},
+      {:ex_machina, "~> 2.2"},
+      {:gettext, "~> 0.11"},
+      {:phoenix, "~> 1.3.3"},
+      {:phoenix_ecto, "~> 3.2"},
+      {:phoenix_pubsub, "~> 1.0"},
+      {:postgrex, ">= 0.0.0"}
     ]
   end
 

@@ -7,15 +7,18 @@ defmodule ApiWeb.HealthSummaryControllerTest do
     {:ok, conn: put_req_header(conn, "accept", "application/json")}
   end
 
-  describe "index" do
-    test "gets the complete summary", %{conn: conn} do
+  describe "returning health summaries" do
+    test "for all endpoints", %{conn: conn} do
       endpoints = insert_pair(:endpoint)
       [head | _] = endpoints
       insert(:health_status, %{endpoint: head})
 
-      conn = get conn, health_summary_path(conn, :index)
+      result = conn
+               |> get(health_summary_path(conn, :index))
+               |> doc
 
-      assert json_response(conn, 200)["data"] |> Enum.count >= 2
+      assert json_response(result, 200)["data"]
+             |> Enum.count >= 2
     end
   end
 end

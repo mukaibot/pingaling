@@ -20,6 +20,7 @@ defmodule ApiWeb.ConnCase do
       # Import conveniences for testing with connections
       use Phoenix.ConnTest
       import ApiWeb.Router.Helpers
+      import Bureaucrat.Helpers
 
       # The default endpoint for testing
       @endpoint ApiWeb.Endpoint

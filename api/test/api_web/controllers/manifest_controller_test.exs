@@ -25,17 +25,17 @@ defmodule ApiWeb.ManifestControllerTest do
                   }
                 )
 
-  describe "apply" do
-    test "applying a manifest creates an endpoint" do
-      conn = post build_conn(), manifest_path(build_conn(), :apply), manifest: @create_attrs
+  describe "applying a manifest" do
+    test "creates an endpoint" do
+      conn = post(build_conn(), manifest_path(build_conn(), :apply), manifest: @create_attrs) |> doc
       assert json_response(conn, :created)["name"] == @name
     end
 
-    test "applying a manifest updates an endpoint" do
-      create = post build_conn(), manifest_path(build_conn(), :apply), manifest: @create_attrs
+    test "updates an endpoint" do
+      create = post(build_conn(), manifest_path(build_conn(), :apply), manifest: @create_attrs)
       assert json_response(create, :created)["description"] == nil
 
-      update = post build_conn(), manifest_path(build_conn(), :apply), manifest: @update_attrs
+      update = post(build_conn(), manifest_path(build_conn(), :apply), manifest: @update_attrs) |> doc
       assert json_response(update, :ok)["description"] == @update_attrs
                                                           |> Map.get("spec")
                                                           |> Map.get("description")
