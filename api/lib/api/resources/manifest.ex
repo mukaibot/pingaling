@@ -1,30 +1,13 @@
 defmodule Api.Resources.Manifest do
   @moduledoc false
 
-  alias Api.Resources
+  alias Api.Resources.Manifests.V1.Endpoint
 
   def apply(input) do
-    validated_input = validate(input)
-    case elem(validated_input, 0) do
-      :ok ->
-        {_, params} = validated_input
-        endpoint = Resources.get_endpoint(params["spec"]["name"])
-
-        status = if endpoint == nil do
-          Resources.create_endpoint(params["spec"])
-          :created
-        else
-          Resources.update_endpoint(endpoint, params["spec"])
-          :ok
-        end
-
-        {
-          status,
-          Resources.get_endpoint!(params["spec"]["name"])
-        }
-
-      :bad_request ->
-        validated_input
+    {status, params} = validate(input)
+    case status do
+      :ok -> Endpoint.upsert(params)
+      :bad_request -> {status, params}
     end
   end
 
