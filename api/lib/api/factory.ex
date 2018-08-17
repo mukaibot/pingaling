@@ -25,4 +25,12 @@ defmodule Api.Factory do
       endpoint: [build(:endpoint)]
     }
   end
+
+  def notification_channel_factory do
+    %Api.NotificationChannels.ChannelConfiguration{
+      name: sequence(:name, &"channel#{&1}"),
+      type: sequence(:type, [:slack, :pagerduty]),
+      data: %{"foo" => "bar"}
+    }
+  end
 end

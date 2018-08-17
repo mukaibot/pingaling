@@ -9,6 +9,7 @@ defmodule ApiWeb.Router do
     pipe_through :api
     resources "/incidents", IncidentController, only: [:index]
     get "/health/summary", HealthSummaryController, :index
+    get "/notification_channels", NotificationChannelController, :index
     get "/endpoints/:name", EndpointController, :show
     post "/manifest", ManifestController, :apply
   end

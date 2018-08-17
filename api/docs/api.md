@@ -8,6 +8,8 @@
     * [index](#api-api-incidents-index)
   * [API /api/manifest](#api-api-manifest)
     * [apply](#api-api-manifest-apply)
+  * [API /api/notification_channels](#api-api-notification_channels)
+    * [index](#api-api-notification_channels-index)
 
 ## API /api/endpoints
 ### <a id=api-api-endpoints-show></a>show
@@ -66,14 +68,14 @@ cache-control: max-age=0, private, must-revalidate
       "updated": null,
       "type": "endpoint",
       "status": "pending",
-      "name": "my-service10"
+      "name": "my-service15"
     },
     {
       "url": "https://dingbats.svc.local/boop",
       "updated": null,
       "type": "endpoint",
       "status": "pending",
-      "name": "my-service11"
+      "name": "my-service16"
     }
   ]
 }
@@ -103,27 +105,27 @@ cache-control: max-age=0, private, must-revalidate
   "data": [
     {
       "url": "https://service.svc.local/healthz",
-      "updated_at": "2018-08-17T04:21:14.620686Z",
+      "updated_at": "2018-08-17T05:17:28.611846Z",
       "status": "open",
       "next_attempt": null,
       "name": "my-service6",
-      "id": 269
+      "id": 324
     },
     {
       "url": "https://service.svc.local/healthz",
-      "updated_at": "2018-08-17T04:21:14.627902Z",
+      "updated_at": "2018-08-17T05:17:28.613516Z",
       "status": "open",
       "next_attempt": null,
       "name": "my-service6",
-      "id": 270
+      "id": 325
     },
     {
       "url": "https://service.svc.local/healthz",
-      "updated_at": "2018-08-17T04:21:14.628944Z",
+      "updated_at": "2018-08-17T05:17:28.614488Z",
       "status": "open",
       "next_attempt": null,
       "name": "my-service6",
-      "id": 271
+      "id": 326
     }
   ]
 }
@@ -207,6 +209,42 @@ cache-control: max-age=0, private, must-revalidate
   "next_check": null,
   "name": "foobar-svc",
   "description": "an excellent service"
+}
+```
+
+## API /api/notification_channels
+### <a id=api-api-notification_channels-index></a>index
+#### listing all channels
+##### Request
+* __Method:__ GET
+* __Path:__ /api/notification_channels
+* __Request headers:__
+```
+accept: application/json
+```
+
+##### Response
+* __Status__: 200
+* __Response headers:__
+```
+content-type: application/json; charset=utf-8
+cache-control: max-age=0, private, must-revalidate
+```
+* __Response body:__
+```json
+{
+  "data": [
+    {
+      "updated_at": "2018-08-17T05:17:28.624174Z",
+      "type": "slack",
+      "name": "channel10"
+    },
+    {
+      "updated_at": "2018-08-17T05:17:28.626179Z",
+      "type": "pagerduty",
+      "name": "channel11"
+    }
+  ]
 }
 ```
 
