@@ -3,8 +3,6 @@ require 'yaml'
 
 module Commands
   class Apply < Base
-    VALID_KINDS = %w(checks/endpoint checks/cron)
-
     option ['-f', '--file'], 'FILE', 'Path to the yaml file', attribute_name: :manifest, required: true do |arg|
       validate_file(arg)
     end
@@ -37,11 +35,6 @@ module Commands
           manifest.fetch('apiVersion')
         rescue
           raise(ArgumentError, "'#{path}' is not a valid file")
-        end
-
-        kind = manifest.fetch('kind')
-        unless VALID_KINDS.include?(kind)
-          raise(ArgumentError, "'#{kind}' invalid for kind attribute. Valid kinds are: #{VALID_KINDS.join(', ')}")
         end
 
         manifest

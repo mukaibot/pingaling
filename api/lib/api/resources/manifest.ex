@@ -3,6 +3,8 @@ defmodule Api.Resources.Manifest do
 
   alias Api.Resources.Manifests.V1.Endpoint
 
+  @acceptable_kinds ["checks/endpoint", "notifications/slack"]
+
   def apply(input) do
     case validate(input) do
       {:ok, "checks/endpoint", params} -> Endpoint.upsert(params)
@@ -40,10 +42,10 @@ defmodule Api.Resources.Manifest do
     else
       %{"kind" => kind} = params
 
-      if kind == "checks/endpoint" do
+      if Enum.member?(@acceptable_kinds, kind) do
         {status, kind, params}
       else
-        {:bad_request, %{message: "the only supported kind for now is 'checks/endpoint'"}}
+        {:bad_request, %{message: "Invalid kind '#{kind}'. Acceptable values are #{Enum.join(@acceptable_kinds, ", ")}"}}
       end
     end
   end

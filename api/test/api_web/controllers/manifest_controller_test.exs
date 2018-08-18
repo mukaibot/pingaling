@@ -51,7 +51,7 @@ defmodule ApiWeb.ManifestControllerTest do
 
       assert json_response(missing_kind, :bad_request)
              |> Map.get("message")
-             |> String.contains?("supported kind")
+             |> String.contains?("Acceptable")
     end
 
     test "applying manifest without spec returns error" do
