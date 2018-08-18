@@ -4,10 +4,9 @@ defmodule Api.Resources.Manifest do
   alias Api.Resources.Manifests.V1.Endpoint
 
   def apply(input) do
-    {status, params} = validate(input)
-    case status do
-      :ok -> Endpoint.upsert(params)
-      :bad_request -> {status, params}
+    case validate(input) do
+      {:ok, "checks/endpoint", params} -> Endpoint.upsert(params)
+      {:bad_request, message} -> {:bad_request, message}
     end
   end
 
@@ -42,27 +41,31 @@ defmodule Api.Resources.Manifest do
       %{"kind" => kind} = params
 
       if kind == "checks/endpoint" do
-        {status, params}
+        {status, kind, params}
       else
         {:bad_request, %{message: "the only supported kind for now is 'checks/endpoint'"}}
       end
     end
   end
 
-  defp ensure_spec_present({status, params}) do
+  defp ensure_spec_present({status, kind, params}) do
     cond do
       status == :bad_request ->
-        {status, params}
+        {status, kind, params}
       Map.has_key?(params, "spec") ->
-        {:ok, params}
+        {:ok, kind, params}
       true ->
         {:bad_request, %{message: "Missing spec"}}
     end
   end
 
-  defp ensure_spec_valid({status, params}) do
+  defp ensure_spec_present({:bad_request, message}) do
+    {:bad_request, message}
+  end
+
+  defp ensure_spec_valid({status, kind, params}) do
     if status == :bad_request do
-      {status, params}
+      {status, kind, params}
     else
       %{"spec" => spec} = params
 
@@ -74,9 +77,13 @@ defmodule Api.Resources.Manifest do
         !Map.has_key?(spec, "url") ->
           {:bad_request, %{message: "spec is missing url"}}
         true ->
-          {:ok, params}
+          {:ok, kind, params}
       end
     end
+  end
+
+  defp ensure_spec_valid({:bad_request, message}) do
+    {:bad_request, message}
   end
 
   defp validate(params) do
