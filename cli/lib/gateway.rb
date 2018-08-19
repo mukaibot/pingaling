@@ -3,7 +3,7 @@ require 'client_config.rb'
 
 class Gateway
   def initialize
-    @host = ClientConfig.new.host
+    @host = ClientConfig.new.host || 'http://localhost:4000/api'
   end
 
   def describe_endpoint(name)

@@ -1,29 +1,21 @@
 require 'yaml'
 
+# read the ~/.pingaling config file
+# validate yaml
+# return host if not nil
 class ClientConfig
-    # read the ~/.pingaling config file
-    # validate yaml
-    # return host if not nil
 
-    def initialize
-        @path = config_path
-    end
+    CONFIG_PATH = File.join(File.expand_path('~'), '.pingaling')
 
     def host
         # fetch and validate host in config file
         begin
-            host = load_config(@path).fetch('host')
-            # validate host not nil, and start with http
+            host = load_config(CONFIG_PATH).fetch('host')
+            # validate host start with http
             return host if host.to_s.start_with?('http')
-            raise(ClientConfigHostNotValid.new(@path))
         rescue
-            raise(ArgumentError, "Failed to fetch host from #{@path}")
+            raise(ClientConfigHostNotValid.new(CONFIG_PATH))
         end
-    end
-
-    def config_path
-        # Describe the home path to config file
-        File.join(File.expand_path('~'), '.pingaling')
     end
 
     def load_config(path)
@@ -49,7 +41,7 @@ class ClientConfig
 
     class ClientConfigHostNotValid < StandardError
         def initialize(path)
-            super("Host not valid in #{path}")
+            super("Failed to fetch host from #{path}")
         end
     end
 
