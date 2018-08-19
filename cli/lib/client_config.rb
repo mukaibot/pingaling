@@ -10,24 +10,24 @@ class ClientConfig
     end
 
     def host
-        load_config(@path)['host']
-    end
- 
-    def fetch_host(config)
+        # fetch and validate host in config file
         begin
-            host = config.fetch('host') 
-            return host unless host.nil?
-            raise(ClientConfigHostNotFound.new(@path))
+            host = load_config(@path).fetch('host')
+            # validate host not nil, and start with http
+            return host if host.to_s.start_with?('http')
+            raise(ClientConfigHostNotValid.new(@path))
         rescue
-            raise(ArgumentError, "#{config} is not valid")
+            raise(ArgumentError, "Failed to fetch host from #{@path}")
         end
     end
 
     def config_path
+        # Describe the home path to config file
         File.join(File.expand_path('~'), '.pingaling')
     end
 
     def load_config(path)
+        # Load client config file
         if File.exist?(path)
             begin
                 config = YAML.load_file(path)
@@ -47,9 +47,9 @@ class ClientConfig
         end
     end
 
-    class ClientConfigHostNotFound < StandardError
+    class ClientConfigHostNotValid < StandardError
         def initialize(path)
-            super("Host not found in #{path}")
+            super("Host not valid in #{path}")
         end
     end
 
