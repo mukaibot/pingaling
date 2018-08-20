@@ -1,40 +1,44 @@
 defmodule Api.Resources.Manifests.V1.Endpoint do
-  defstruct apiVersion: nil, kind: nil, spec: nil
-
   alias Api.Resources
   alias Api.Resources.Manifests.V1.Endpoint
 
-  def validate(%Endpoint{apiVersion: nil}), do: {:bad_request, %{message: "missing apiVersion"}}
-  def validate(%Endpoint{kind: nil}), do: {:bad_request, %{message: "missing kind"}}
-  def validate(%Endpoint{spec: nil}), do: {:bad_request, %{message: "missing spec"}}
-
-  def validate(%Endpoint{spec: spec}) do
-    if !is_map(spec) do
-      {:bad_request, %{message: "spec is not a map"}}
-    end
-  end
-
-  def validate(%Endpoint{apiVersion: version}) do
-    if version != 1 do
-      {:bad_request, %{message: "unknown apiVersion. Supported apiVersion is 1"}}
+  defp ensure_spec_valid(spec) do
+    cond do
+      !is_map(spec) ->
+        {:bad_request, %{message: "spec is not a map"}}
+      !Map.has_key?(spec, "name") ->
+        {:bad_request, %{message: "spec is missing name"}}
+      !Map.has_key?(spec, "url") ->
+        {:bad_request, %{message: "spec is missing url"}}
+      true ->
+        {:ok, spec}
     end
   end
 
   def upsert(params) do
-    endpoint = Resources.get_endpoint(params["spec"]["name"])
+    {status, spec} = ensure_spec_valid(params)
 
-    status = if endpoint == nil do
-      Resources.create_endpoint(params["spec"])
-      :created
+    if status == :bad_request do
+      {status, spec}
     else
-      Resources.update_endpoint(endpoint, params["spec"])
-      :ok
-    end
+      endpoint = Resources.get_endpoint(spec["name"])
+      status = if endpoint == nil do
+        Resources.create_endpoint(spec)
+        :created
+      else
+        Resources.update_endpoint(endpoint, spec)
+        :ok
+      end
 
-    {
-      status,
-      Resources.get_endpoint!(params["spec"]["name"])
-    }
+      resource = Resources.get_endpoint!(spec["name"])
+      {
+        status,
+        %{
+          description: resource.description,
+          name: resource.name,
+          url: resource.url
+        }
+      }
+    end
   end
 end
-

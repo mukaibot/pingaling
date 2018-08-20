@@ -105,27 +105,27 @@ cache-control: max-age=0, private, must-revalidate
   "data": [
     {
       "url": "https://service.svc.local/healthz",
-      "updated_at": "2018-08-17T05:17:28.611846Z",
+      "updated_at": "2018-08-20T07:48:13.636723Z",
       "status": "open",
       "next_attempt": null,
-      "name": "my-service6",
-      "id": 324
+      "name": "my-service8",
+      "id": 969
     },
     {
       "url": "https://service.svc.local/healthz",
-      "updated_at": "2018-08-17T05:17:28.613516Z",
+      "updated_at": "2018-08-20T07:48:13.638010Z",
       "status": "open",
       "next_attempt": null,
-      "name": "my-service6",
-      "id": 325
+      "name": "my-service8",
+      "id": 970
     },
     {
       "url": "https://service.svc.local/healthz",
-      "updated_at": "2018-08-17T05:17:28.614488Z",
+      "updated_at": "2018-08-20T07:48:13.638817Z",
       "status": "open",
       "next_attempt": null,
-      "name": "my-service6",
-      "id": 326
+      "name": "my-service8",
+      "id": 971
     }
   ]
 }
@@ -166,7 +166,6 @@ cache-control: max-age=0, private, must-revalidate
 ```json
 {
   "url": "https://google.com",
-  "next_check": null,
   "name": "foobar-svc",
   "description": null
 }
@@ -206,9 +205,81 @@ cache-control: max-age=0, private, must-revalidate
 ```json
 {
   "url": "https://google.com",
-  "next_check": null,
   "name": "foobar-svc",
   "description": "an excellent service"
+}
+```
+
+#### applying a manifest creates a Slack notification
+##### Request
+* __Method:__ POST
+* __Path:__ /api/manifest
+* __Request headers:__
+```
+content-type: multipart/mixed; boundary=plug_conn_test
+```
+* __Request body:__
+```json
+{
+  "manifest": {
+    "spec": {
+      "webhook_url": "https://hooks.slack.com/services/Z027TX47K/ABC1C7WUC/yT8EZZquxq4uEHkfE4gzrBoI",
+      "name": "foobar"
+    },
+    "kind": "notifications/slack",
+    "apiVersion": 1
+  }
+}
+```
+
+##### Response
+* __Status__: 201
+* __Response headers:__
+```
+content-type: application/json; charset=utf-8
+cache-control: max-age=0, private, must-revalidate
+```
+* __Response body:__
+```json
+{
+  "message": "Created Slack channel foobar"
+}
+```
+
+#### applying a manifest updates a Slack notification
+##### Request
+* __Method:__ POST
+* __Path:__ /api/manifest
+* __Request headers:__
+```
+content-type: multipart/mixed; boundary=plug_conn_test
+```
+* __Request body:__
+```json
+{
+  "manifest": {
+    "spec": {
+      "webhook_url": "https://hooks.slack.com/services/Z027TX47K/ABC1C7WUC/yT8EZZquxq4uEHkfE4gzrBoI",
+      "name": "foobar",
+      "description": "non-critical errors"
+    },
+    "kind": "notifications/slack",
+    "apiVersion": 1
+  }
+}
+```
+
+##### Response
+* __Status__: 200
+* __Response headers:__
+```
+content-type: application/json; charset=utf-8
+cache-control: max-age=0, private, must-revalidate
+```
+* __Response body:__
+```json
+{
+  "message": "Updated Slack channel foobar"
 }
 ```
 
@@ -235,14 +306,14 @@ cache-control: max-age=0, private, must-revalidate
 {
   "data": [
     {
-      "updated_at": "2018-08-17T05:17:28.624174Z",
+      "updated_at": "2018-08-20T07:48:13.454241Z",
       "type": "slack",
-      "name": "channel10"
+      "name": "channel0"
     },
     {
-      "updated_at": "2018-08-17T05:17:28.626179Z",
+      "updated_at": "2018-08-20T07:48:13.455501Z",
       "type": "pagerduty",
-      "name": "channel11"
+      "name": "channel1"
     }
   ]
 }

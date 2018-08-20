@@ -7,6 +7,7 @@ Bureaucrat.start(
     {ApiWeb.HealthSummaryController, "API /api/health"},
     {ApiWeb.IncidentController, "API /api/incidents"},
     {ApiWeb.Manifests.ManifestControllerEndpoints, "API /api/manifest"},
+    {ApiWeb.Manifests.ManifestControllerNotificationChannelSlack, "API /api/manifest"},
     {ApiWeb.NotificationChannelController, "API /api/notification_channels"},
   ],
   env_var: "DOC"

@@ -2,12 +2,14 @@ defmodule Api.Resources.Manifest do
   @moduledoc false
 
   alias Api.Resources.Manifests.V1.Endpoint
+  alias Api.Resources.Manifests.V1.Slack
 
   @acceptable_kinds ["checks/endpoint", "notifications/slack"]
 
   def apply(input) do
     case validate(input) do
-      {:ok, "checks/endpoint", params} -> Endpoint.upsert(params)
+      {:ok, "checks/endpoint", params} -> Endpoint.upsert(Map.get(params, "spec"))
+      {:ok, "notifications/slack", params} -> Slack.upsert(Map.get(params, "spec"))
       {:bad_request, message} -> {:bad_request, message}
     end
   end
@@ -65,35 +67,11 @@ defmodule Api.Resources.Manifest do
     {:bad_request, message}
   end
 
-  defp ensure_spec_valid({status, kind, params}) do
-    if status == :bad_request do
-      {status, kind, params}
-    else
-      %{"spec" => spec} = params
-
-      cond do
-        !is_map(spec) ->
-          {:bad_request, %{message: "spec is not a map"}}
-        !Map.has_key?(spec, "name") ->
-          {:bad_request, %{message: "spec is missing name"}}
-        !Map.has_key?(spec, "url") ->
-          {:bad_request, %{message: "spec is missing url"}}
-        true ->
-          {:ok, kind, params}
-      end
-    end
-  end
-
-  defp ensure_spec_valid({:bad_request, message}) do
-    {:bad_request, message}
-  end
-
   defp validate(params) do
     {:ok, params}
     |> ensure_api_version
     |> ensure_kind_present
     |> ensure_kind_valid
     |> ensure_spec_present
-    |> ensure_spec_valid
   end
 end

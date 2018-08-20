@@ -17,7 +17,10 @@ defmodule Api.Application do
       supervisor(ApiWeb.Endpoint, []),
       # Start your own worker by calling: Api.Worker.start_link(arg1, arg2, arg3)
       # worker(Api.Worker, [arg1, arg2, arg3]),
+    ]
 
+    # Don't run these guys when doing tests
+    background_checkers = [
       supervisor(Api.Checker, []),
       supervisor(Api.IncidentManagement.IncidentCreator, []),
       supervisor(Api.IncidentManagement.IncidentAutoResolver, [])
@@ -26,7 +29,12 @@ defmodule Api.Application do
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: Api.Supervisor]
-    Supervisor.start_link(children, opts)
+
+    if Mix.env == :test do
+      Supervisor.start_link(children, opts)
+    else
+      Supervisor.start_link(children ++ background_checkers, opts)
+    end
   end
 
   # Tell Phoenix to update the endpoint configuration
