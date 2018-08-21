@@ -17,7 +17,6 @@ defmodule ApiWeb.NotificationChannelControllerTest do
       response = json_response(conn, 200)["data"]
 
       assert length(response) == 2
-      assert response |> List.first |> Map.get("type") == "slack"
     end
   end
 end

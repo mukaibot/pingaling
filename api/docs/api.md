@@ -64,18 +64,18 @@ cache-control: max-age=0, private, must-revalidate
 {
   "data": [
     {
+      "url": "https://service.svc.local/healthz",
+      "updated": null,
+      "type": "endpoint",
+      "status": "pending",
+      "name": "my-service19"
+    },
+    {
       "url": "http://foobar.com.au/diagnostic",
       "updated": null,
       "type": "endpoint",
       "status": "pending",
-      "name": "my-service15"
-    },
-    {
-      "url": "https://dingbats.svc.local/boop",
-      "updated": null,
-      "type": "endpoint",
-      "status": "pending",
-      "name": "my-service16"
+      "name": "my-service20"
     }
   ]
 }
@@ -104,28 +104,28 @@ cache-control: max-age=0, private, must-revalidate
 {
   "data": [
     {
-      "url": "https://service.svc.local/healthz",
-      "updated_at": "2018-08-20T07:48:13.636723Z",
+      "url": "https://dingbats.svc.local/boop",
+      "updated_at": "2018-08-21T10:54:54.084053Z",
       "status": "open",
       "next_attempt": null,
-      "name": "my-service8",
-      "id": 969
+      "name": "my-service12",
+      "id": 96
     },
     {
-      "url": "https://service.svc.local/healthz",
-      "updated_at": "2018-08-20T07:48:13.638010Z",
+      "url": "https://dingbats.svc.local/boop",
+      "updated_at": "2018-08-21T10:54:54.085110Z",
       "status": "open",
       "next_attempt": null,
-      "name": "my-service8",
-      "id": 970
+      "name": "my-service12",
+      "id": 97
     },
     {
-      "url": "https://service.svc.local/healthz",
-      "updated_at": "2018-08-20T07:48:13.638817Z",
+      "url": "https://dingbats.svc.local/boop",
+      "updated_at": "2018-08-21T10:54:54.085859Z",
       "status": "open",
       "next_attempt": null,
-      "name": "my-service8",
-      "id": 971
+      "name": "my-service12",
+      "id": 98
     }
   ]
 }
@@ -210,7 +210,7 @@ cache-control: max-age=0, private, must-revalidate
 }
 ```
 
-#### applying a manifest creates a Slack notification
+#### applying a manifest creates a notification policy
 ##### Request
 * __Method:__ POST
 * __Path:__ /api/manifest
@@ -246,7 +246,7 @@ cache-control: max-age=0, private, must-revalidate
 }
 ```
 
-#### applying a manifest updates a Slack notification
+#### applying a manifest updates a notification policy
 ##### Request
 * __Method:__ POST
 * __Path:__ /api/manifest
@@ -264,6 +264,81 @@ content-type: multipart/mixed; boundary=plug_conn_test
       "description": "non-critical errors"
     },
     "kind": "notifications/slack",
+    "apiVersion": 1
+  }
+}
+```
+
+##### Response
+* __Status__: 200
+* __Response headers:__
+```
+content-type: application/json; charset=utf-8
+cache-control: max-age=0, private, must-revalidate
+```
+* __Response body:__
+```json
+{
+  "message": "Updated Slack channel foobar"
+}
+```
+
+#### applying a manifest creates a notification policy
+##### Request
+* __Method:__ POST
+* __Path:__ /api/manifest
+* __Request headers:__
+```
+content-type: multipart/mixed; boundary=plug_conn_test
+```
+* __Request body:__
+```json
+{
+  "manifest": {
+    "spec": {
+      "name": "foobar",
+      "endpoint": "my-service2",
+      "channel": "channel3"
+    },
+    "kind": "notifications/policy",
+    "apiVersion": 1
+  }
+}
+```
+
+##### Response
+* __Status__: 201
+* __Response headers:__
+```
+content-type: application/json; charset=utf-8
+cache-control: max-age=0, private, must-revalidate
+```
+* __Response body:__
+```json
+{
+  "message": "Created Slack channel foobar"
+}
+```
+
+#### applying a manifest updates a notification policy
+##### Request
+* __Method:__ POST
+* __Path:__ /api/manifest
+* __Request headers:__
+```
+content-type: multipart/mixed; boundary=plug_conn_test
+```
+* __Request body:__
+```json
+{
+  "manifest": {
+    "spec": {
+      "name": "foobar",
+      "endpoint": "my-service0",
+      "description": "non-critical errors",
+      "channel": "channel1"
+    },
+    "kind": "notifications/policy",
     "apiVersion": 1
   }
 }
@@ -306,14 +381,14 @@ cache-control: max-age=0, private, must-revalidate
 {
   "data": [
     {
-      "updated_at": "2018-08-20T07:48:13.454241Z",
+      "updated_at": "2018-08-21T10:54:53.884995Z",
       "type": "slack",
-      "name": "channel0"
+      "name": "channel4"
     },
     {
-      "updated_at": "2018-08-20T07:48:13.455501Z",
+      "updated_at": "2018-08-21T10:54:53.886888Z",
       "type": "pagerduty",
-      "name": "channel1"
+      "name": "channel5"
     }
   ]
 }

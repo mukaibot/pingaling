@@ -27,17 +27,19 @@ defmodule ApiWeb.Manifests.ManifestControllerNotificationChannelSlackTest do
                 )
 
   describe "applying a manifest" do
-    test "creates a Slack notification" do
+    test "creates a notification policy" do
       conn = post(build_conn(), manifest_path(build_conn(), :apply), manifest: @create_attrs)
              |> doc
-      assert json_response(conn, :created)["message"] |> String.contains?(@name)
+      assert json_response(conn, :created)["message"]
+             |> String.contains?(@name)
     end
 
-    test "updates a Slack notification" do
+    test "updates a notification policy" do
       post(build_conn(), manifest_path(build_conn(), :apply), manifest: @create_attrs)
       update = post(build_conn(), manifest_path(build_conn(), :apply), manifest: @update_attrs)
                |> doc
-      assert json_response(update, :ok)["message"] |> String.contains?("Updated")
+      assert json_response(update, :ok)["message"]
+             |> String.contains?("Updated")
     end
   end
 end

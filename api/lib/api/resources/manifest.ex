@@ -3,12 +3,14 @@ defmodule Api.Resources.Manifest do
 
   alias Api.Resources.Manifests.V1.Endpoint
   alias Api.Resources.Manifests.V1.Slack
+  alias Api.Resources.Manifests.V1.NotificationPolicy
 
-  @acceptable_kinds ["checks/endpoint", "notifications/slack"]
+  @acceptable_kinds ["checks/endpoint", "notifications/policy", "notifications/slack"]
 
   def apply(input) do
     case validate(input) do
       {:ok, "checks/endpoint", params} -> Endpoint.upsert(Map.get(params, "spec"))
+      {:ok, "notifications/policy", params} -> NotificationPolicy.apply(Map.get(params, "spec"))
       {:ok, "notifications/slack", params} -> Slack.upsert(Map.get(params, "spec"))
       {:bad_request, message} -> {:bad_request, message}
     end

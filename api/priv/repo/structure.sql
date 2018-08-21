@@ -2,8 +2,8 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 10.4 (Ubuntu 10.4-0ubuntu0.18.04)
--- Dumped by pg_dump version 10.4 (Ubuntu 10.4-0ubuntu0.18.04)
+-- Dumped from database version 10.5 (Ubuntu 10.5-0ubuntu0.18.04)
+-- Dumped by pg_dump version 10.5 (Ubuntu 10.5-0ubuntu0.18.04)
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -59,6 +59,16 @@ CREATE TYPE public.incident_status AS ENUM (
     'closed',
     'resolved',
     'auto_resolved'
+);
+
+
+--
+-- Name: notification_channel_type; Type: TYPE; Schema: public; Owner: -
+--
+
+CREATE TYPE public.notification_channel_type AS ENUM (
+    'slack',
+    'pagerduty'
 );
 
 
@@ -170,6 +180,87 @@ ALTER SEQUENCE public.incidents_id_seq OWNED BY public.incidents.id;
 
 
 --
+-- Name: notification_channels; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.notification_channels (
+    id bigint NOT NULL,
+    name character varying(255) NOT NULL,
+    type public.notification_channel_type NOT NULL,
+    data jsonb NOT NULL,
+    inserted_at timestamp with time zone NOT NULL,
+    updated_at timestamp with time zone NOT NULL,
+    description character varying(255)
+);
+
+
+--
+-- Name: notification_channels_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.notification_channels_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: notification_channels_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.notification_channels_id_seq OWNED BY public.notification_channels.id;
+
+
+--
+-- Name: notification_policies; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.notification_policies (
+    id bigint NOT NULL,
+    name character varying(255) NOT NULL,
+    description character varying(255),
+    endpoint_id bigint NOT NULL,
+    channel_id bigint NOT NULL,
+    limit_sending boolean DEFAULT false,
+    monday_start timestamp without time zone,
+    monday_end timestamp without time zone,
+    tuesday_start timestamp without time zone,
+    tuesday_end timestamp without time zone,
+    wednesday_start timestamp without time zone,
+    wednesday_end timestamp without time zone,
+    thursday_start timestamp without time zone,
+    thursday_end timestamp without time zone,
+    friday_start timestamp without time zone,
+    friday_end timestamp without time zone,
+    saturday_start timestamp without time zone,
+    saturday_end timestamp without time zone,
+    sunday_start timestamp without time zone,
+    sunday_end timestamp without time zone
+);
+
+
+--
+-- Name: notification_policies_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.notification_policies_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: notification_policies_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.notification_policies_id_seq OWNED BY public.notification_policies.id;
+
+
+--
 -- Name: schema_migrations; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -201,6 +292,20 @@ ALTER TABLE ONLY public.incidents ALTER COLUMN id SET DEFAULT nextval('public.in
 
 
 --
+-- Name: notification_channels id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.notification_channels ALTER COLUMN id SET DEFAULT nextval('public.notification_channels_id_seq'::regclass);
+
+
+--
+-- Name: notification_policies id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.notification_policies ALTER COLUMN id SET DEFAULT nextval('public.notification_policies_id_seq'::regclass);
+
+
+--
 -- Name: endpoints endpoints_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -222,6 +327,22 @@ ALTER TABLE ONLY public.health_statuses
 
 ALTER TABLE ONLY public.incidents
     ADD CONSTRAINT incidents_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: notification_channels notification_channels_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.notification_channels
+    ADD CONSTRAINT notification_channels_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: notification_policies notification_policies_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.notification_policies
+    ADD CONSTRAINT notification_policies_pkey PRIMARY KEY (id);
 
 
 --
@@ -256,8 +377,24 @@ ALTER TABLE ONLY public.incidents
 
 
 --
+-- Name: notification_policies notification_policies_channel_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.notification_policies
+    ADD CONSTRAINT notification_policies_channel_id_fkey FOREIGN KEY (channel_id) REFERENCES public.notification_channels(id);
+
+
+--
+-- Name: notification_policies notification_policies_endpoint_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.notification_policies
+    ADD CONSTRAINT notification_policies_endpoint_id_fkey FOREIGN KEY (endpoint_id) REFERENCES public.endpoints(id);
+
+
+--
 -- PostgreSQL database dump complete
 --
 
-INSERT INTO public."schema_migrations" (version) VALUES (20180723201002), (20180811061147), (20180814105520), (20180815073448), (20180815101537), (20180815101641);
+INSERT INTO public."schema_migrations" (version) VALUES (20180723201002), (20180811061147), (20180814105520), (20180815073448), (20180815101537), (20180815101641), (20180817043833), (20180819003041), (20180819104324), (20180820105743);
 
