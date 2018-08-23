@@ -7,41 +7,31 @@ class ClientConfig
 
     CONFIG_PATH = File.join(File.expand_path('~'), '.pingaling')
 
-    def host
-        # fetch and validate host in config file
-        begin
-            host = load_config(CONFIG_PATH).fetch('host')
-            # validate host start with http
-            return host if host.to_s.start_with?('http')
-        rescue
-            raise(ClientConfigHostNotValid.new(CONFIG_PATH))
-        end
+    attr_accessor :apiVersion, :servers, :current_server
+
+    def initialize
+        load_config
     end
 
-    def load_config(path)
+    def load_config
         # Load client config file
-        if File.exist?(path)
-            begin
-                config = YAML.load_file(path)
-                return config unless config.nil?
-            rescue
-                raise(ArgumentError, "'#{path}' is not a valid file")
+        if File.exist?(CONFIG_PATH)
+            config = YAML.load_file(CONFIG_PATH)
+            unless config.nil?
+                @apiVersion = config.fetch('apiVersion')
+                @servers = config.fetch('servers')
+                @current_server = config.fetch('current-server')
+                return self
             end
+
         else
-            raise(ClientConfigNotFound.new(path))
+            raise(ClientConfigNotFound.new)
         end
-        raise(ArgumentError, "'#{path}' is not a valid file")
     end
 
     class ClientConfigNotFound < StandardError
-        def initialize(path)
-            super("#{path} not found")
-        end
-    end
-
-    class ClientConfigHostNotValid < StandardError
-        def initialize(path)
-            super("Failed to fetch host from #{path}")
+        def initialize
+            super("#{CONFIG_PATH} not found")
         end
     end
 
