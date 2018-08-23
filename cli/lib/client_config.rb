@@ -25,8 +25,33 @@ class ClientConfig
             end
 
         else
-            raise(ClientConfigNotFound.new)
+            generate
         end
+    end
+
+    def generate
+        # generate the config from user input
+        puts "apiVersion: [v1] >"
+        @apiVersion = gets.chomp
+        @apiVersion = 'v1' if @apiVersion.empty?
+            
+        puts "server name: [localhost] >"
+        name = gets.chomp
+        name = 'localhost' if name.empty?
+
+        puts "server url: [http://localhost:4000] >"
+        server = gets.chomp
+        server = 'http://localhost:4000' if server.empty?
+
+        @servers = [
+            {
+                "name" => name,
+                "server" => server
+            }
+        ]
+        @current_server = server
+        return self
+        # TODO: write the config to .pingaling
     end
 
     class ClientConfigNotFound < StandardError
