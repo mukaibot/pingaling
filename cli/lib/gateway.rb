@@ -1,9 +1,9 @@
 require 'http'
-require 'client_config.rb'
+require 'client_config'
 
 class Gateway
   def initialize
-    @host = ClientConfig.new.host || 'http://localhost:4000/api'
+    @host = $client_config.host || 'http://localhost:4000/api'
   end
 
   def describe_endpoint(name)

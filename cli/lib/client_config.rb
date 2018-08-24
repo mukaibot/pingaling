@@ -5,44 +5,63 @@ require 'yaml'
 # return host if not nil
 class ClientConfig
 
-    CONFIG_PATH = File.join(File.expand_path('~'), '.pingaling')
+  CONFIG_PATH = File.join(File.expand_path('~'), '.pingaling')
 
-    def host
-        # fetch and validate host in config file
-        begin
-            host = load_config(CONFIG_PATH).fetch('host')
-            # validate host start with http
-            return host if host.to_s.start_with?('http')
-        rescue
-            raise(ClientConfigHostNotValid.new(CONFIG_PATH))
-        end
-    end
+  attr_accessor :servers, :current_server
 
-    def load_config(path)
-        # Load client config file
-        if File.exist?(path)
-            begin
-                config = YAML.load_file(path)
-                return config unless config.nil?
-            rescue
-                raise(ArgumentError, "'#{path}' is not a valid file")
-            end
-        else
-            raise(ClientConfigNotFound.new(path))
-        end
-        raise(ArgumentError, "'#{path}' is not a valid file")
-    end
+  def initialize
+    @servers = []
+    load_config
+  end
 
-    class ClientConfigNotFound < StandardError
-        def initialize(path)
-            super("#{path} not found")
-        end
-    end
+  def host
+    server = servers.find {|server| server.fetch('name') == current_server}
+    server.fetch('server')
+  end
 
-    class ClientConfigHostNotValid < StandardError
-        def initialize(path)
-            super("Failed to fetch host from #{path}")
-        end
+  def load_config
+    # Load client config file
+    if File.exist?(CONFIG_PATH)
+      config = YAML.load_file(CONFIG_PATH)
+      unless config.nil?
+        @servers = config.fetch('servers')
+        @current_server = config.fetch('current-server')
+        return self
+      end
+    else
+      generate
     end
+  end
+
+  def generate
+    servers << {
+      "server" => "http://localhost:4000",
+      "name"   => "localhost",
+    }
+    @current_server = "localhost"
+    write_config
+    return self
+  end
+
+  def add_server(name)
+    puts "server url: [http://localhost:4000] >"
+    server = STDIN.gets.chomp
+    server = 'http://localhost:4000' if server.empty?
+    servers << {
+                  "server" => server,
+                  "name"   => name,
+                }
+    @current_server = name
+    write_config
+  end
+
+  def write_config
+    File.open(CONFIG_PATH, "w") do |file|
+      file.write({
+        "servers"        => servers,
+        "current-server" => current_server,
+      }.to_yaml)
+    end
+  end
 
 end
