@@ -15,29 +15,29 @@ module Actions
     def use(name)
       # if given name not exists, no changes
       # if given name exists, change the current_server to it
-      
-      for server in $client_config.servers
-        if server['name'] == name
-          $client_config.current_server = name
-          $client_config.write_config
-        end
+      if $client_config.servers.find {|server| server.fetch('name') == name}
+        $client_config.current_server = name
+        $client_config.write_config
       end
       puts "Current server: #{$client_config.current_server}"
     end
 
     def add(name)
-      if name == nil
-        puts "Missing name"
-        return nil
+      # abort if name not given
+      # do nothing if name already exists
+      # otherwise, add server
+      
+      abort "Missing name" if name == nil
+      
+      # server_exist = false
+      # for server in $client_config.servers
+      #   if server['name'] == name
+      #     server_exist = true
+      #   end 
+      # end
+      unless $client_config.servers.find {|server| server.fetch('name') == name}
+        $client_config.add_server(name)
       end
-      server_exist = false
-      for server in $client_config.servers
-        if server['name'] == name
-          puts "Server name '#{name}' already exists"
-          server_exist = true
-        end 
-      end
-      $client_config.add_server(name) unless server_exist
     end
   end
 

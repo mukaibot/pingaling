@@ -15,11 +15,8 @@ class ClientConfig
   end
 
   def host
-    for server in @servers
-      if server['name'] == @current_server
-        return server['server']
-      end
-    end
+    server = servers.find {|server| server.fetch('name') == current_server}
+    server.fetch('server')
   end
 
   def load_config
@@ -58,15 +55,14 @@ class ClientConfig
     server = STDIN.gets.chomp
     server = 'http://localhost:4000' if server.empty?
     @servers << {
+                  "server" => server,
                   "name"   => name,
-                  "server" => server
                 }
     @current_server = name
     write_config
   end
 
   def write_config
-    
     h = {
       "apiVersion"     => @apiVersion,
       "servers"        => @servers,
