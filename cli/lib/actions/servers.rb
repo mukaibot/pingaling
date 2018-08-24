@@ -9,6 +9,7 @@ module Actions
 
     def get
       puts CLIENT_CONFIG.servers
+      # TODO: Print out a pretty table
     end
 
     def use(name)
