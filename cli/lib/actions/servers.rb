@@ -10,7 +10,7 @@ module Actions
     def get
       puts CLIENT_CONFIG.servers
     end
-    
+
     def use(name)
       # if given name not exists, no changes
       # if given name exists, change the current_server to it
