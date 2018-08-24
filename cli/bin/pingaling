@@ -8,6 +8,6 @@ require 'client_config'
 $stdout.sync = true
 $stderr.sync = true
 
-CLIENT_CONFIG = ClientConfig.new
+$client_config = ClientConfig.new
 
 Commands::MainCommand.run

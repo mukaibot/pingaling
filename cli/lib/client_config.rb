@@ -5,7 +5,7 @@ require 'yaml'
 # return host if not nil
 class ClientConfig
 
-  CONFIG_PATH = File.join(File.expand_path('~'), '.pingaling1')
+  CONFIG_PATH = File.join(File.expand_path('~'), '.pingaling')
 
   attr_accessor :apiVersion, :servers, :current_server
 
