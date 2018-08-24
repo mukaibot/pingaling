@@ -10,7 +10,7 @@ module Actions
       response = gw.get_incidents
       result = JSON.parse(response.body)
       table = TTY::Table.new(headers, parse_results(result))
-      puts TTY::Table::Renderer::Basic.new(table, padding: padding).render
+      puts TTY::Table::Renderer::Basic.new(table, padding: padding, resize: true).render
     end
 
     private
