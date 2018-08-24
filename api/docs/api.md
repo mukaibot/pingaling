@@ -64,18 +64,18 @@ cache-control: max-age=0, private, must-revalidate
 {
   "data": [
     {
-      "url": "https://service.svc.local/healthz",
-      "updated": null,
-      "type": "endpoint",
-      "status": "pending",
-      "name": "my-service19"
-    },
-    {
       "url": "http://foobar.com.au/diagnostic",
       "updated": null,
       "type": "endpoint",
       "status": "pending",
-      "name": "my-service20"
+      "name": "my-service21"
+    },
+    {
+      "url": "https://dingbats.svc.local/boop",
+      "updated": null,
+      "type": "endpoint",
+      "status": "pending",
+      "name": "my-service22"
     }
   ]
 }
@@ -104,28 +104,28 @@ cache-control: max-age=0, private, must-revalidate
 {
   "data": [
     {
-      "url": "https://dingbats.svc.local/boop",
-      "updated_at": "2018-08-21T10:54:54.084053Z",
+      "url": "https://service.svc.local/healthz",
+      "updated_at": "2018-08-24T10:06:40.703663Z",
       "status": "open",
       "next_attempt": null,
-      "name": "my-service12",
-      "id": 96
+      "name": "my-service14",
+      "id": 251
     },
     {
-      "url": "https://dingbats.svc.local/boop",
-      "updated_at": "2018-08-21T10:54:54.085110Z",
+      "url": "https://service.svc.local/healthz",
+      "updated_at": "2018-08-24T10:06:40.704857Z",
       "status": "open",
       "next_attempt": null,
-      "name": "my-service12",
-      "id": 97
+      "name": "my-service14",
+      "id": 252
     },
     {
-      "url": "https://dingbats.svc.local/boop",
-      "updated_at": "2018-08-21T10:54:54.085859Z",
+      "url": "https://service.svc.local/healthz",
+      "updated_at": "2018-08-24T10:06:40.706780Z",
       "status": "open",
       "next_attempt": null,
-      "name": "my-service12",
-      "id": 98
+      "name": "my-service14",
+      "id": 253
     }
   ]
 }
@@ -297,8 +297,8 @@ content-type: multipart/mixed; boundary=plug_conn_test
   "manifest": {
     "spec": {
       "name": "foobar",
-      "endpoint": "my-service2",
-      "channel": "channel3"
+      "endpoint": "my-service1",
+      "channel": "channel2"
     },
     "kind": "notifications/policy",
     "apiVersion": 1
@@ -316,7 +316,7 @@ cache-control: max-age=0, private, must-revalidate
 * __Response body:__
 ```json
 {
-  "message": "Created Slack channel foobar"
+  "message": "Created new policy linking Endpoint 'my-service1' to Slack channel 'foobar'"
 }
 ```
 
@@ -334,9 +334,9 @@ content-type: multipart/mixed; boundary=plug_conn_test
   "manifest": {
     "spec": {
       "name": "foobar",
-      "endpoint": "my-service0",
+      "endpoint": "my-service3",
       "description": "non-critical errors",
-      "channel": "channel1"
+      "channel": "channel4"
     },
     "kind": "notifications/policy",
     "apiVersion": 1
@@ -354,7 +354,7 @@ cache-control: max-age=0, private, must-revalidate
 * __Response body:__
 ```json
 {
-  "message": "Updated Slack channel foobar"
+  "message": "Updated policy linking Endpoint 'my-service3' to Pagerduty channel 'foobar'"
 }
 ```
 
@@ -381,14 +381,14 @@ cache-control: max-age=0, private, must-revalidate
 {
   "data": [
     {
-      "updated_at": "2018-08-21T10:54:53.884995Z",
-      "type": "slack",
-      "name": "channel4"
+      "updated_at": "2018-08-24T10:06:40.509631Z",
+      "type": "pagerduty",
+      "name": "channel6"
     },
     {
-      "updated_at": "2018-08-21T10:54:53.886888Z",
-      "type": "pagerduty",
-      "name": "channel5"
+      "updated_at": "2018-08-24T10:06:40.510929Z",
+      "type": "slack",
+      "name": "channel7"
     }
   ]
 }

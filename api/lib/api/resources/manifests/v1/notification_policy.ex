@@ -1,6 +1,7 @@
 defmodule Api.Resources.Manifests.V1.NotificationPolicy do
   import Ecto.Query, warn: false
   import Ecto.Changeset
+  require Logger
   alias Api.NotificationChannels.ChannelConfiguration
   alias Api.NotificationChannels.NotificationPolicy
   alias Api.Repo
@@ -53,16 +54,47 @@ defmodule Api.Resources.Manifests.V1.NotificationPolicy do
       preload: [:endpoint, :notification_channel]
     )
 
+    attrs = attrs_from_spec(spec)
+    channel_type = attrs.channel.type
+                   |> Atom.to_string
+                   |> String.capitalize
+
     if npolicy == nil do
       %NotificationPolicy{}
-      |> changeset(attrs_from_spec(spec))
-      |> Repo.insert!
-      {:created, %{message: "Created Slack channel #{spec["name"]}"}}
+      |> changeset(attrs)
+      |> Repo.insert
+      {
+        :created,
+        %{
+          message: "Created new policy linking Endpoint '#{attrs.endpoint.name}' to #{channel_type} channel '#{
+            spec["name"]
+          }'"
+        }
+      }
     else
-      npolicy
-      |> changeset(attrs_from_spec(spec))
-      |> Repo.update!
-      {:ok, %{message: "Updated Slack channel #{spec["name"]}"}}
+      {status, message} = npolicy
+                          |> changeset(attrs)
+                          |> Repo.update
+
+      if status == :ok do
+        {
+          :ok,
+          %{
+            message: "Updated policy linking Endpoint '#{attrs.endpoint.name}' to #{channel_type} channel '#{
+              spec["name"]
+            }'"
+          }
+        }
+      else
+        {
+          status,
+          %{
+            message: "Error updating policy linking Endpoint '#{attrs.endpoint.name}' to #{channel_type} channel '#{
+              spec["name"]
+            }' - #{message}"
+          }
+        }
+      end
     end
   end
 
@@ -70,13 +102,35 @@ defmodule Api.Resources.Manifests.V1.NotificationPolicy do
     %{
       name: Map.get(spec, "name"),
       description: Map.get(spec, "description"),
-      endpoint: Repo.get_by!(Endpoint, name: spec["endpoint"]),
-      channel: Repo.get_by!(ChannelConfiguration, name: spec["channel"])
+      endpoint: Repo.get_by(Endpoint, name: spec["endpoint"]),
+      channel: Repo.get_by(ChannelConfiguration, name: spec["channel"])
     }
+  end
+
+  defp validate_channel(spec) do
+    channel = Repo.get_by(ChannelConfiguration, name: spec["channel"])
+
+    if is_nil channel do
+      {:not_found, %{message: "Notification Channel '#{spec["channel"]}' does not exist"}}
+    else
+      {:ok, spec}
+    end
+  end
+
+  defp validate_endpoint(spec) do
+    endpoint = Repo.get_by(Endpoint, name: spec["endpoint"])
+
+    if is_nil endpoint do
+      {:not_found, %{message: "Endpoint '#{spec["endpoint"]}' does not exist"}}
+    else
+      {:ok, spec}
+    end
   end
 
   defp validate_spec(spec) do
     with {:ok, spec} <- validate_mandatory_keys(spec),
+         {:ok, spec} <- validate_endpoint(spec),
+         {:ok, spec} <- validate_channel(spec),
          {:ok, spec} <- validate_name(spec)
       do
       upsert(spec)
@@ -121,4 +175,3 @@ defmodule Api.Resources.Manifests.V1.NotificationPolicy do
     end
   end
 end
-

@@ -38,6 +38,7 @@ defmodule Api.Mixfile do
       {:ecto_enum, "~> 1.0"},
       {:ex_machina, "~> 2.2"},
       {:gettext, "~> 0.11"},
+      {:httpoison, "~> 1.2"},
       {:phoenix, "~> 1.3.3"},
       {:phoenix_ecto, "~> 3.2"},
       {:phoenix_pubsub, "~> 1.0"},

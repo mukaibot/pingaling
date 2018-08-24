@@ -9,6 +9,7 @@ defmodule Api.IncidentManagement.IncidentAutoResolver do
   alias Api.Repo
   require Logger
 
+  alias Api.NotificationChannels.NotificationDispatcher
   alias Api.Resources.HealthSummariser
   alias Api.Resources.Incident
 
@@ -57,6 +58,8 @@ defmodule Api.IncidentManagement.IncidentAutoResolver do
       |> Incident.changeset(%{status: :auto_resolved})
       |> Ecto.Changeset.put_assoc(:endpoint, incident.endpoint)
       |> Repo.update!()
+
+      NotificationDispatcher.dispatch({:auto_resolved, incident, incident.endpoint})
     end
   end
 end

@@ -9,6 +9,7 @@ defmodule Api.IncidentManagement.IncidentCreator do
   alias Api.Repo
   require Logger
 
+  alias Api.NotificationChannels.NotificationDispatcher
   alias Api.Resources.HealthSummariser
   alias Api.Resources.Incident
 
@@ -40,19 +41,29 @@ defmodule Api.IncidentManagement.IncidentCreator do
   defp create_incident_if_required(endpoint) do
     case Repo.one(
            from i in Incident,
-           where: [endpoint_id: ^endpoint.id, status: "open"],
-           select: count(i.id)
+           where: [
+             endpoint_id: ^endpoint.id,
+             status: "open"
+           ],
+           select: count(i.id),
+           limit: 1
          ) do
       0 ->
-        Logger.debug("Creating incident for #{endpoint.name}")
-
-        %Incident{}
-        |> Incident.changeset(%{status: :open})
-        |> Ecto.Changeset.put_assoc(:endpoint, endpoint)
-        |> Repo.insert()
+        create_and_alert(endpoint)
 
       1 ->
         Logger.debug("Incident already open for #{endpoint.name}")
     end
+  end
+
+  defp create_and_alert(endpoint) do
+    Logger.debug("Creating incident for #{endpoint.name}")
+
+    {_, incident } = %Incident{}
+               |> Incident.changeset(%{status: :open})
+               |> Ecto.Changeset.put_assoc(:endpoint, endpoint)
+               |> Repo.insert()
+
+    NotificationDispatcher.dispatch({:open, incident, endpoint})
   end
 end
