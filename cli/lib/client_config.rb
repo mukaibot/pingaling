@@ -10,7 +10,16 @@ class ClientConfig
   attr_accessor :apiVersion, :servers, :current_server
 
   def initialize
+    @servers = []
     load_config
+  end
+
+  def host
+    for server in @servers
+      if server['name'] == @current_server
+        return server['server']
+      end
+    end
   end
 
   def load_config
@@ -43,15 +52,26 @@ class ClientConfig
     server = gets.chomp
     server = 'http://localhost:4000' if server.empty?
 
-    @servers = [
-      {
-        "name"   => name,
-        "server" => server
-      }
-    ]
-    @current_server = server
+    @servers << {
+                  "name"   => name,
+                  "server" => server
+                }
+
+    @current_server = name
+    write_config
     return self
-    # TODO: write the config to .pingaling
+  end
+
+  def write_config
+    
+    h = {
+      "apiVersion"     => @apiVersion,
+      "servers"        => @servers,
+      "current-server" => @current_server,
+    }
+    File.open(CONFIG_PATH, "w") do |file|
+      file.write h.to_yaml
+    end
   end
 
   class ClientConfigNotFound < StandardError
