@@ -25,15 +25,12 @@ defmodule Api.Resources.Manifest do
     end
   end
 
-  defp ensure_kind_present({status, params}) do
-    cond do
-      status == :bad_request ->
-        {status, params}
-      Map.has_key?(params, "kind") ->
-        {:ok, params}
-      true ->
-        {:bad_request, %{message: "Missing kind"}}
-    end
+  defp ensure_kind_present({:ok, %{"kind" => _} = params}) do
+    {:ok, params}
+  end
+  defp ensure_kind_present({:bad_request, params}), do: {:bad_request, params}
+  defp ensure_kind_present({_, _}) do
+    {:bad_request, %{message: "Missing kind"}}
   end
 
   defp ensure_kind_valid({status, params}) do
