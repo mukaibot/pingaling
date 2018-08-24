@@ -27,7 +27,7 @@ class ClientConfig
     else
       generate
     end
-end
+  end
 
   def generate
     # generate the config from user input
