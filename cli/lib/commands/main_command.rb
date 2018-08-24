@@ -7,6 +7,7 @@ module Commands
     subcommand ['apply'], 'Create/update a resource', Commands::Apply
     subcommand ['get'], 'Gets a resource', Commands::GetResource
     subcommand ['config'], 'Modify client config', Commands::ClientConfig
+
     def run(*args)
       super(*args)
     end
