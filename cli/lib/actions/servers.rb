@@ -8,8 +8,13 @@ module Actions
     end
 
     def get
-      puts $client_config.servers
-      # TODO: Print out a pretty table
+      table = TTY::Table.new(['SERVER', 'NAME'], rows($client_config.servers))
+      puts TTY::Table::Renderer::Basic.new(table, padding: [0, 3, 0, 0]).render
+    end
+
+    def rows(results)
+      #[['localhost', 'http://localhost:3000'], ['b1', 'b2']]
+      results.map {|result| result.map {|k, v| v}}
     end
 
     def use(name)
@@ -26,15 +31,7 @@ module Actions
       # abort if name not given
       # do nothing if name already exists
       # otherwise, add server
-      
       abort "Missing name" if name == nil
-      
-      # server_exist = false
-      # for server in $client_config.servers
-      #   if server['name'] == name
-      #     server_exist = true
-      #   end 
-      # end
       unless $client_config.servers.find {|server| server.fetch('name') == name}
         $client_config.add_server(name)
       end
