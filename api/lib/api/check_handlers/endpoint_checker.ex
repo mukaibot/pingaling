@@ -3,7 +3,6 @@ defmodule Api.CheckHandlers.EndpointChecker do
 
   alias Api.CheckHandlers.SuccessHandler
   alias Api.CheckHandlers.FailureHandler
-  alias Api.Resources.HealthSummariser
   alias Api.Resources.NextChecks
 
   require Logger

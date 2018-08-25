@@ -1,6 +1,5 @@
 defmodule Api.Resources.Manifests.V1.Endpoint do
   alias Api.Resources
-  alias Api.Resources.Manifests.V1.Endpoint
 
   defp ensure_spec_valid(spec) do
     cond do
