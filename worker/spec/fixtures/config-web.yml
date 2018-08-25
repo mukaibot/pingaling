@@ -1,9 +1,0 @@
----
-web_endpoints:
-- host: https://google.com
-  timeout: 30
-  retries: 3
-  check_every: 10
-  alert_via:
-  - slack:
-      channel: '#foobar'
