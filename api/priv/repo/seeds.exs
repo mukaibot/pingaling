@@ -35,6 +35,12 @@ Repo.transaction fn ->
       endpoint: Resources.get_endpoint!("dingbat-poker")
     }
   )
+  Repo.insert!(
+    %Api.Resources.Incident{
+      status: :auto_resolved,
+      endpoint: Resources.get_endpoint!("dingbat-poker")
+    }
+  )
 end
 
 Repo.transaction fn ->
