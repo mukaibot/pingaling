@@ -10,3 +10,6 @@ RUN mix local.rebar --force
 RUN mix deps.get
 
 COPY . /app
+
+EXPOSE 4000
+CMD mix ecto.reset && mix phx.server

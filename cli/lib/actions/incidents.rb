@@ -16,11 +16,11 @@ module Actions
     private
 
     def headers
-      ['INCIDENT', 'STATUS', 'ENDPOINT', 'UPDATED', 'URL']
+      ['INCIDENT', 'STATUS', 'ENDPOINT', 'URL']
     end
 
     def parse_results(results)
-      to_collection(results.fetch('data', [])).map { |r| r.values_at('id', 'status', 'name', 'updated_at', 'url') }
+      to_collection(results.fetch('data', [])).map { |r| r.values_at('id', 'status', 'name', 'url') }
     end
 
     def padding

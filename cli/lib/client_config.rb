@@ -35,7 +35,7 @@ class ClientConfig
 
   def generate
     servers << {
-      "server" => "http://localhost:4000",
+      "server" => "http://api:4000/api",
       "name"   => "localhost",
     }
     @current_server = "localhost"

@@ -42,5 +42,5 @@ config :api, Api.Repo,
   username: "postgres",
   password: "postgres",
   database: "pingaling_dev",
-  hostname: "localhost",
+  hostname: System.get_env("POSTGRES_HOST") || "localhost",
   pool_size: 10
