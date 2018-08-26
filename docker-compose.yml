@@ -22,3 +22,5 @@ services:
     container_name: pingaling_cli
     depends_on:
       - api
+    environment:
+    - API_SERVER=http://api:4000/api

@@ -4,8 +4,8 @@ require 'yaml'
 # validate yaml
 # return host if not nil
 class ClientConfig
-
   CONFIG_PATH = File.join(File.expand_path('~'), '.pingaling')
+  DEFAULT_URL = ENV.fetch('API_SERVER', 'http://localhost:4000/api')
 
   attr_accessor :servers, :current_server
 
@@ -35,7 +35,7 @@ class ClientConfig
 
   def generate
     servers << {
-      "server" => "http://api:4000/api",
+      "server" => DEFAULT_URL,
       "name"   => "localhost",
     }
     @current_server = "localhost"
@@ -44,9 +44,9 @@ class ClientConfig
   end
 
   def add_server(name)
-    puts "server url: [http://localhost:4000] >"
+    puts "server url: [#{DEFAULT_URL}] >"
     server = STDIN.gets.chomp
-    server = 'http://localhost:4000' if server.empty?
+    server = DEFAULT_URL if server.empty?
     servers << {
                   "server" => server,
                   "name"   => name,
@@ -63,5 +63,4 @@ class ClientConfig
       }.to_yaml)
     end
   end
-
 end

@@ -3,7 +3,8 @@ require 'client_config'
 
 class Gateway
   def initialize
-    @host = $client_config.host || 'http://localhost:4000/api'
+    @config = ClientConfig.new
+    @host = @config.host
   end
 
   def describe_endpoint(name)
