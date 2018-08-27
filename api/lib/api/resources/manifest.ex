@@ -25,26 +25,23 @@ defmodule Api.Resources.Manifest do
   defp ensure_kind_present({_, _}), do: {:bad_request, %{message: "Missing kind"}}
 
   defp ensure_kind_valid({:bad_request, params}), do: {:bad_request, params}
-  defp ensure_kind_valid({status, %{"kind" => kind} = params}) do
-    if Enum.member?(@acceptable_kinds, kind) do
-      {status, kind, params}
-    else
-      {
-        :bad_request,
-        %{message: "Invalid kind '#{kind}'. Acceptable values are #{Enum.join(@acceptable_kinds, ", ")}"}
+  defp ensure_kind_valid({_, %{"kind" => kind} = params}) when kind in @acceptable_kinds, do:
+    {:ok, kind, params}
+  defp ensure_kind_valid({_, %{"kind" => kind}}) do
+    {
+      :bad_request,
+      %{
+        message: "Invalid kind '#{kind}'. Acceptable values are #{
+          Enum.join(@acceptable_kinds, ",")
+        }"
       }
-    end
+    }
   end
 
   defp ensure_spec_present({:bad_request, kind, params}), do: {:bad_request, kind, params}
   defp ensure_spec_present({:bad_request, message}), do: {:bad_request, message}
-  defp ensure_spec_present({_, kind, params}) do
-    if Map.has_key?(params, "spec") && is_map(params["spec"]) do
-      {:ok, kind, params}
-    else
-      {:bad_request, %{message: "Missing spec"}}
-    end
-  end
+  defp ensure_spec_present({status, kind, %{"spec" => spec} = params}) when is_map(spec), do: {status, kind, params}
+  defp ensure_spec_present({_, _, _}), do: {:bad_request, %{message: "Missing spec"}}
 
   defp validate(params) do
     {:ok, params}
