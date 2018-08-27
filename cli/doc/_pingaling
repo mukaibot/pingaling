@@ -1,0 +1,30 @@
+#compdef _pingaling pingaling
+
+function _pingaling {
+    local line
+
+    _arguments -C \
+        "-h[Show help information]" \
+        "--h[Show help information]" \
+        "1: :(apply config get)" \
+        "*::arg:->args"
+
+    case $line[1] in
+        get)
+            _pingaling_get
+        ;;
+        apply)
+            _pingaling_apply
+        ;;
+    esac
+}
+
+function _pingaling_get {
+    _alternative \
+      'arguments:custom arg:((endpoints\:"List Endpoints" incidents\:"List Incidents"))'
+}
+
+function _pingaling_apply {
+    _arguments \
+        "-f[manifest file]:filename:_files"
+}
