@@ -33,4 +33,12 @@ defmodule Api.Factory do
       data: %{"foo" => "bar"}
     }
   end
+
+  def notification_policy_factory do
+    %Api.NotificationChannels.NotificationPolicy{
+      name: sequence(:name, &"notification_policy#{&1}"),
+      endpoint: insert(:endpoint),
+      notification_channel: insert(:notification_channel)
+    }
+  end
 end

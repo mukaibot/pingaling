@@ -14,4 +14,11 @@ defmodule ApiWeb.NotificationChannelController do
 
     render(conn, "index.json", notification_channels: notification_channels)
   end
+
+  def delete(conn, %{"name" => name}) do
+    channel = Repo.get_by!(ChannelConfiguration, name: name)
+    Repo.delete(channel)
+
+    json(conn, %{message: "Deleted notification channel #{channel.name}"})
+  end
 end

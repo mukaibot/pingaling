@@ -12,4 +12,11 @@ defmodule ApiWeb.EndpointController do
 
     render(conn, "show.json", endpoint: Map.merge(endpoint, %{health_summary: health}))
   end
+
+  def delete(conn, %{"name" => name}) do
+    endpoint = Resources.get_endpoint!(name)
+    Resources.delete_endpoint(endpoint)
+
+    json(conn, %{message: "Deleted endpoint #{endpoint.name}"})
+  end
 end

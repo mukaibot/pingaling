@@ -19,4 +19,15 @@ defmodule ApiWeb.NotificationChannelControllerTest do
       assert length(response) == 2
     end
   end
+
+  describe "deleting" do
+    test "channel is deleted", %{conn: conn} do
+      channel = insert(:notification_channel)
+
+      conn = delete(conn, notification_channel_path(conn, :delete, channel.name))
+             |> doc
+
+      assert json_response(conn, 200) == %{"message" => "Deleted notification channel #{channel.name}"}
+    end
+  end
 end

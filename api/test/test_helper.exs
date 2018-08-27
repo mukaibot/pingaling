@@ -10,6 +10,7 @@ Bureaucrat.start(
     {ApiWeb.Manifests.ManifestControllerNotificationChannelSlack, "API /api/manifest"},
     {ApiWeb.Manifests.ManifestControllerNotificationPolicy, "API /api/manifest"},
     {ApiWeb.NotificationChannelController, "API /api/notification_channels"},
+    {ApiWeb.NotificationPolicyController, "API /api/notification_policies"},
   ],
   env_var: "DOC"
 )

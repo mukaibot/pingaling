@@ -43,6 +43,25 @@ defmodule ApiWeb.EndpointControllerTest do
     end
   end
 
+  describe "deleting an endpoint" do
+    test "it deletes the endpoint", %{conn: conn} do
+      endpoint = create_endpoint("")
+      {
+        :ok,
+        [
+          endpoint: %{
+            name: name
+          }
+        ]
+      } = endpoint
+
+      conn = delete(conn, endpoint_path(conn, :delete, name))
+             |> doc
+
+      assert json_response(conn, 200) == %{"message" => "Deleted endpoint #{name}" }
+    end
+  end
+
   defp create_endpoint(_) do
     endpoint = fixture(:endpoint)
     {:ok, endpoint: endpoint}
