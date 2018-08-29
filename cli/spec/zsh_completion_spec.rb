@@ -2,7 +2,7 @@ require 'spec_helper'
 
 RSpec.describe "ZSH Completion" do
   it 'must have all root commands' do
-    expect(root_commands).to eq %w(apply config get)
+    expect(root_commands).to eq %w(apply config delete get)
   end
 
   private

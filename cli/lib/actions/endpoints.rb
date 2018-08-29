@@ -13,6 +13,11 @@ module Actions
       puts TTY::Table::Renderer::Basic.new(table, padding: padding).render
     end
 
+    def delete(name )
+      gw = Gateway.new
+      puts gw.delete_endpoint(name)
+    end
+
     private
 
     def headers

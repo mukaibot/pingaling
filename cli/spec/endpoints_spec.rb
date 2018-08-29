@@ -14,4 +14,28 @@ RSpec.describe "Endpoints acceptance test" do
       end
     end
   end
+
+  it "delete the endpoint" do
+    Dir.chdir "bin" do
+      command            = "./pingaling delete endpoint widget-aligner"
+      stderr_out, status = Open3.capture2e(command)
+      output             = stderr_out.split("\n")
+
+      aggregate_failures do
+        expect(output[0]).to include "Deleted endpoint widget-aligner"
+      end
+    end
+  end
+
+  it "return error on no NAME to delete" do
+    Dir.chdir "bin" do
+      command            = "./pingaling delete endpoint"
+      stderr_out, status = Open3.capture2e(command)
+      output             = stderr_out.split("\n")
+
+      aggregate_failures do
+        expect(output[0]).to include "no value provided"
+      end
+    end
+  end
 end

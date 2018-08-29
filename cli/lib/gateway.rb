@@ -17,6 +17,11 @@ class Gateway
     response.code == 200 ? response : raise(ApiUnavailableError.new(@host))
   end
 
+  def delete_endpoint(name)
+    response = HTTP.delete(@host + '/endpoints/' + name)
+    response.code == 200 ? response : raise(ApiUnavailableError.new(@host))
+  end
+
   def get_health_summary
     response = HTTP.get(@host + '/health/summary')
     response.code == 200 ? response : raise(ApiUnavailableError.new(@host))
