@@ -9,4 +9,4 @@ COPY Gemfile.lock /app
 RUN bundle install
 
 COPY . /app
-CMD waitforit api:4000 --timeout=120 && bundle exec rspec
+CMD waitforit api_acceptance_tests:4000 --timeout=120 && bundle exec rspec
