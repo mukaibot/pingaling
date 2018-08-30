@@ -3,6 +3,7 @@ defmodule Api.Resources.Endpoint do
   import Ecto.Changeset
 
   alias Api.Resources.HealthStatus
+  alias Api.Resources.Incident
 
   schema "endpoints" do
     field :description, :string
@@ -12,6 +13,7 @@ defmodule Api.Resources.Endpoint do
     field :interval, :integer
     field :retries, :integer
     has_many :health_statuses, HealthStatus, on_delete: :delete_all
+    has_many :incidents, Incident, on_delete: :delete_all
 
     timestamps(type: :utc_datetime)
   end
