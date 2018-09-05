@@ -4,8 +4,8 @@ defmodule Api.Mixfile do
   def project do
     [
       app: :api,
-      version: "0.0.1",
-      elixir: "~> 1.4",
+      version: "0.5.0",
+      elixir: "~> 1.7",
       elixirc_paths: elixirc_paths(Mix.env),
       compilers: [:phoenix, :gettext] ++ Mix.compilers,
       start_permanent: Mix.env == :prod,
@@ -35,6 +35,7 @@ defmodule Api.Mixfile do
     [
       {:bureaucrat, "~> 0.2.4"},
       {:cowboy, "~> 1.0"},
+      {:distillery, "~> 2.0"},
       {:ecto_enum, "~> 1.0"},
       {:ex_machina, "~> 2.2"},
       {:gettext, "~> 0.11"},

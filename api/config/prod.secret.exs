@@ -9,12 +9,10 @@ use Mix.Config
 # kept out of version control and might be hard to recover
 # or recreate for your teammates (or yourself later on).
 config :api, ApiWeb.Endpoint,
-  secret_key_base: "GI34d05FmNvu3JsMQWdOELrWjQP+4xOvYt6CGJ2CvSPx15kGuP+RtzRIQfYCtDw1"
+       secret_key_base: "GI34d05FmNvu3JsMQWdOELrWjQP+4xOvYt6CGJ2CvSPx15kGuP+RtzRIQfYCtDw1"
 
 # Configure your database
-config :api, Api.Repo,
-  adapter: Ecto.Adapters.Postgres,
-  username: "postgres",
-  password: "postgres",
-  database: "pingaling",
-  pool_size: 15
+config :api,
+       Api.Repo,
+       adapter: Ecto.Adapters.Postgres,
+       pool_size: 15

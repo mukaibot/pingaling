@@ -97,14 +97,14 @@ cache-control: max-age=0, private, must-revalidate
       "updated": null,
       "type": "endpoint",
       "status": "pending",
-      "name": "my-service31"
+      "name": "my-service28"
     },
     {
       "url": "https://dingbats.svc.local/boop",
       "updated": null,
       "type": "endpoint",
       "status": "pending",
-      "name": "my-service32"
+      "name": "my-service29"
     }
   ]
 }
@@ -134,27 +134,27 @@ cache-control: max-age=0, private, must-revalidate
   "data": [
     {
       "url": "https://service.svc.local/healthz",
-      "updated_at": "2018-08-27T10:34:58.153557Z",
+      "updated_at": "2018-09-02T21:52:12.860557Z",
       "status": "open",
       "next_attempt": null,
       "name": "my-service24",
-      "id": 531
+      "id": 623
     },
     {
       "url": "https://service.svc.local/healthz",
-      "updated_at": "2018-08-27T10:34:58.154432Z",
+      "updated_at": "2018-09-02T21:52:12.861696Z",
       "status": "open",
       "next_attempt": null,
       "name": "my-service24",
-      "id": 532
+      "id": 624
     },
     {
       "url": "https://service.svc.local/healthz",
-      "updated_at": "2018-08-27T10:34:58.155091Z",
+      "updated_at": "2018-09-02T21:52:12.862339Z",
       "status": "open",
       "next_attempt": null,
       "name": "my-service24",
-      "id": 533
+      "id": 625
     }
   ]
 }
@@ -326,8 +326,8 @@ content-type: multipart/mixed; boundary=plug_conn_test
   "manifest": {
     "spec": {
       "name": "foobar",
-      "endpoint": "my-service3",
-      "channel": "channel4"
+      "endpoint": "my-service4",
+      "channel": "channel5"
     },
     "kind": "notifications/policy",
     "apiVersion": 1
@@ -345,7 +345,7 @@ cache-control: max-age=0, private, must-revalidate
 * __Response body:__
 ```json
 {
-  "message": "Created new policy linking Endpoint 'my-service3' to Pagerduty channel 'foobar'"
+  "message": "Created new policy linking Endpoint 'my-service4' to Slack channel 'foobar'"
 }
 ```
 
@@ -363,9 +363,9 @@ content-type: multipart/mixed; boundary=plug_conn_test
   "manifest": {
     "spec": {
       "name": "foobar",
-      "endpoint": "my-service0",
+      "endpoint": "my-service1",
       "description": "non-critical errors",
-      "channel": "channel1"
+      "channel": "channel2"
     },
     "kind": "notifications/policy",
     "apiVersion": 1
@@ -383,7 +383,7 @@ cache-control: max-age=0, private, must-revalidate
 * __Response body:__
 ```json
 {
-  "message": "Updated policy linking Endpoint 'my-service0' to Slack channel 'foobar'"
+  "message": "Updated policy linking Endpoint 'my-service1' to Slack channel 'foobar'"
 }
 ```
 
@@ -410,14 +410,14 @@ cache-control: max-age=0, private, must-revalidate
 {
   "data": [
     {
-      "updated_at": "2018-08-27T10:34:57.951869Z",
-      "type": "slack",
-      "name": "channel7"
+      "updated_at": "2018-09-02T21:52:12.681863Z",
+      "type": "pagerduty",
+      "name": "channel16"
     },
     {
-      "updated_at": "2018-08-27T10:34:57.953112Z",
-      "type": "pagerduty",
-      "name": "channel8"
+      "updated_at": "2018-09-02T21:52:12.682945Z",
+      "type": "slack",
+      "name": "channel17"
     }
   ]
 }
@@ -427,7 +427,7 @@ cache-control: max-age=0, private, must-revalidate
 #### deleting channel is deleted
 ##### Request
 * __Method:__ DELETE
-* __Path:__ /api/notification_channels/channel6
+* __Path:__ /api/notification_channels/channel15
 * __Request headers:__
 ```
 accept: application/json
@@ -443,7 +443,7 @@ cache-control: max-age=0, private, must-revalidate
 * __Response body:__
 ```json
 {
-  "message": "Deleted notification channel channel6"
+  "message": "Deleted notification channel channel15"
 }
 ```
 
@@ -470,18 +470,18 @@ cache-control: max-age=0, private, must-revalidate
 {
   "data": [
     {
-      "updated_at": "2018-08-27T10:34:57.972154Z",
+      "updated_at": "2018-09-02T21:52:12.667798Z",
       "type": "pagerduty",
       "name": "notification_policy12",
       "endpoint": "my-service13",
       "channel": "channel14"
     },
     {
-      "updated_at": "2018-08-27T10:34:57.983708Z",
+      "updated_at": "2018-09-02T21:52:12.664611Z",
       "type": "slack",
-      "name": "notification_policy15",
-      "endpoint": "my-service16",
-      "channel": "channel17"
+      "name": "notification_policy9",
+      "endpoint": "my-service10",
+      "channel": "channel11"
     }
   ]
 }
@@ -491,7 +491,7 @@ cache-control: max-age=0, private, must-revalidate
 #### deleting policy is deleted
 ##### Request
 * __Method:__ DELETE
-* __Path:__ /api/notification_policies/notification_policy9
+* __Path:__ /api/notification_policies/notification_policy6
 * __Request headers:__
 ```
 accept: application/json
@@ -507,7 +507,7 @@ cache-control: max-age=0, private, must-revalidate
 * __Response body:__
 ```json
 {
-  "message": "Deleted notification policy notification_policy9"
+  "message": "Deleted notification policy notification_policy6"
 }
 ```
 

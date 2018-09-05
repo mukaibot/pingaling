@@ -6,6 +6,16 @@ defmodule Api.Repo do
   DATABASE_URL environment variable.
   """
   def init(_, opts) do
-    {:ok, Keyword.put(opts, :url, System.get_env("DATABASE_URL"))}
+    username = System.get_env("POSTGRES_USER") || "postgres"
+    password = System.get_env("POSTGRES_PASS") || "postgres"
+    database = System.get_env("POSTGRES_DB") || "pingaling"
+    hostname = System.get_env("POSTGRES_HOST") || "localhost"
+    url      = System.get_env("DATABASE_URL") || "postgresql://#{username}@#{hostname}/#{database}"
+
+    {
+      :ok,
+      opts
+      |> Keyword.put(:url, url)
+    }
   end
 end

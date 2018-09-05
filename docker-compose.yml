@@ -1,8 +1,10 @@
-version: "3"
+version: "3.4"
 services:
   api_test:
-    image: api
-    build: api
+    image: api_tests
+    build:
+      context: api
+      target: development
     container_name: pingaling_api
     depends_on:
       - db
@@ -16,17 +18,24 @@ services:
 
   api_acceptance_tests:
     image: api_acceptance_tests
-    build: api
+    build:
+      context: api
+      target: development
     container_name: pingaling_api_acceptance_tests
     depends_on:
-    - db
+    - db_acceptance_tests
     ports:
     - 4000
     environment:
-    - POSTGRES_HOST=db
+    - POSTGRES_HOST=db_acceptance_tests
     - MIX_ENV=dev
     - PORT=4000
     command: /bin/bash -c "mix ecto.reset && mix phx.server"
+
+  db_acceptance_tests:
+    image: postgres:10
+    environment:
+    - POSTGRES_PASSWORD=postgres
 
   db:
     image: postgres:10

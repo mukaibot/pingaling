@@ -1,6 +1,6 @@
-FROM elixir:1.7
+FROM elixir:1.7 as development
 
-ENV MIX_ENV production
+ENV MIX_ENV dev
 ENV PORT 4000
 
 RUN mkdir /app
@@ -16,3 +16,23 @@ COPY . /app
 
 EXPOSE 4000
 CMD mix ecto.migrate && mix phx.server
+
+FROM elixir:1.7 as production-build
+ENV MIX_ENV prod
+ENV PORT 4000
+
+COPY --from=development /root/.mix /root/.mix
+COPY --from=development /app /app
+WORKDIR /app
+
+RUN mix release
+
+FROM elixir:1.7 as production
+ENV MIX_ENV prod
+ENV PORT 4000
+EXPOSE 4000
+
+COPY --from=production-build /root/.mix /root/.mix
+COPY --from=production-build /app/_build/prod/rel/api /app
+
+CMD /app/bin/api migrate && /app/bin/api foreground

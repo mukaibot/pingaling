@@ -30,7 +30,7 @@ defmodule Api.Application do
     # for other strategies and supported options
     opts = [strategy: :one_for_one, name: Api.Supervisor]
 
-    if Mix.env == :test do
+    if System.get_env("MIX_ENV") == "test" do
       Supervisor.start_link(children, opts)
     else
       Supervisor.start_link(children ++ background_checkers, opts)
