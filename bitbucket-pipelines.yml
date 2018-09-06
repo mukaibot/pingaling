@@ -35,6 +35,6 @@ pipelines:
         name: Push to Docker Hub
         script:
         - cd api
-        - docker login -u '$DOCKER_USERNAME' -p '$DOCKER_PASSWORD'
+        - docker login -u $DOCKER_USERNAME -p "$DOCKER_PASSWORD"
         - docker build --target production -t pingaling/server:$MAJOR.$MINOR.$BITBUCKET_BUILD_NUMBER .
         - docker push pingaling/server:$MAJOR.$MINOR.$BITBUCKET_BUILD_NUMBER
