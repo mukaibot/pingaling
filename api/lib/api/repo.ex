@@ -11,15 +11,14 @@ defmodule Api.Repo do
     password = System.get_env("POSTGRES_PASS") || "postgres"
     database = System.get_env("POSTGRES_DB") || "pingaling"
     hostname = System.get_env("POSTGRES_HOST") || "localhost"
-    url      = System.get_env("DATABASE_URL") || "postgresql://#{username}@#{hostname}/#{database}"
+    url      = System.get_env("DATABASE_URL") || "postgresql://#{username}:#{password}@#{hostname}/#{database}"
 
-    Logger.info("Connecting to database #{url}")
+    Logger.info("Connecting to database postgresql://#{username}@#{hostname}/#{database}")
 
     {
       :ok,
       opts
       |> Keyword.put(:url, url)
-      |> Keyword.put(:password, password)
     }
   end
 end
