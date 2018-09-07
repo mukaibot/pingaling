@@ -19,6 +19,7 @@ defmodule Api.Repo do
       :ok,
       opts
       |> Keyword.put(:url, url)
+      |> Keyword.put(:password, password)
     }
   end
 end
