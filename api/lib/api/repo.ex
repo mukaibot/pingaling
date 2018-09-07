@@ -13,7 +13,7 @@ defmodule Api.Repo do
     hostname = System.get_env("POSTGRES_HOST") || "localhost"
     url      = System.get_env("DATABASE_URL") || "postgresql://#{username}@#{hostname}/#{database}"
 
-    Logger.debug("Connecting to database #{url}")
+    Logger.info("Connecting to database #{url}")
 
     {
       :ok,
