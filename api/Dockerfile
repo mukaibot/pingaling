@@ -27,7 +27,7 @@ WORKDIR /app
 
 RUN mix release
 
-FROM elixir:1.5 as production
+FROM erlang:19 as production
 ENV MIX_ENV prod
 ENV PORT 4000
 EXPOSE 4000
