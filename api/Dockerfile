@@ -1,4 +1,4 @@
-FROM elixir:1.5 as development
+FROM elixir:1.7 as development
 
 ENV MIX_ENV dev
 ENV PORT 4000
@@ -17,7 +17,7 @@ COPY . /app
 EXPOSE 4000
 CMD mix ecto.migrate && mix phx.server
 
-FROM elixir:1.5 as production-build
+FROM elixir:1.7 as production-build
 ENV MIX_ENV prod
 ENV PORT 4000
 
@@ -27,7 +27,7 @@ WORKDIR /app
 
 RUN mix release
 
-FROM erlang:19 as production
+FROM erlang:21.0.8 as production
 ENV MIX_ENV prod
 ENV PORT 4000
 EXPOSE 4000
