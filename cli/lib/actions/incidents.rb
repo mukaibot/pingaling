@@ -4,13 +4,20 @@ require 'json'
 
 module Actions
   class Incidents
-    def get
-      gw = Gateway.new
+    NO_INCIDENTS = "No incidents!"
 
+    def get
+      gw       = Gateway.new
       response = gw.get_incidents
-      result = JSON.parse(response.body)
-      table = TTY::Table.new(headers, parse_results(result))
-      puts TTY::Table::Renderer::Basic.new(table, padding: padding, resize: true).render
+      result   = JSON.parse(response.body)
+      data     = parse_results(result)
+
+      if data.any?
+        table = TTY::Table.new(headers, data)
+        puts TTY::Table::Renderer::Basic.new(table, padding: padding, resize: true).render
+      else
+        puts NO_INCIDENTS
+      end
     end
 
     private

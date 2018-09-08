@@ -4,16 +4,23 @@ require 'json'
 
 module Actions
   class Endpoints
-    def get(name = nil)
-      gw = Gateway.new
+    NO_ENDPOINTS = "No endpoints yet".freeze
 
+    def get(name = nil)
+      gw       = Gateway.new
       response = name ? gw.get_endpoint(name) : gw.get_health_summary
-      result = JSON.parse(response.body)
-      table = TTY::Table.new(headers, parse_results(result))
-      puts TTY::Table::Renderer::Basic.new(table, padding: padding).render
+      result   = JSON.parse(response.body)
+      data     = parse_results(result)
+
+      if data.any?
+        table = TTY::Table.new(headers, data)
+        puts TTY::Table::Renderer::Basic.new(table, padding: padding).render
+      else
+        puts NO_ENDPOINTS
+      end
     end
 
-    def delete(name )
+    def delete(name)
       gw = Gateway.new
       puts gw.delete_endpoint(name)
     end
