@@ -5,7 +5,8 @@ require 'yaml'
 # return host if not nil
 class ClientConfig
   CONFIG_PATH = File.join(File.expand_path('~'), '.pingaling')
-  DEFAULT_URL = ENV.fetch('API_SERVER', 'http://localhost:4000/api')
+  LOCALHOST_SERVER = 'http://localhost:4000/api'
+  DEFAULT_URL = ENV.fetch('API_SERVER', LOCALHOST_SERVER)
 
   attr_accessor :servers, :current_server
 

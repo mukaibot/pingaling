@@ -4,7 +4,7 @@ defmodule Api.Mixfile do
   def project do
     [
       app: :api,
-      version: "0.5.0",
+      version: version(),
       elixir: "~> 1.5",
       elixirc_paths: elixirc_paths(Mix.env),
       compilers: [:phoenix, :gettext] ++ Mix.compilers,
@@ -22,6 +22,13 @@ defmodule Api.Mixfile do
       mod: {Api.Application, []},
       extra_applications: [:logger, :runtime_tools]
     ]
+  end
+
+  def version do
+    Path.join([__ENV__.file, "..", "..", "version.txt"])
+    |> Path.expand
+    |> File.read!
+    |> String.trim
   end
 
   # Specifies which paths to compile per environment.
