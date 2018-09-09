@@ -18,7 +18,7 @@ Why should I use it?
 * Thoughtful command-line driven interface, built with a focus on operator pleasure
 
 # Getting up and running
-
+## Installing the server
 Pingaling requires a Postgresql database (developed against Postgres 10, but other versions will probably work) and Erlang. The easiest way to run Pingaling is with Docker. At a high level:
 
 1. Setup a Postgres database
@@ -35,7 +35,14 @@ When you run the Pingaling server, you need to supply the following environment 
 
 The Pingaling server is available at `pingaling/server` from [Docker Hub](https://hub.docker.com/r/pingaling/server/)
 
-The Pingaling client can be configured with `pingaling config` to point to your instance of the API
+## Installing the client
+The Pingaling client is written in Ruby. Installation is as follows:
+
+1. Download the latest release
+1. Extract the zip to your preferred location
+1. Add `<wherever you extracted pingaling>/cli/bin` to your `PATH`
+1. `cd <wherever you extracted pingaling>/cli && bundle install`
+1. `pingaling config add-server # to point to your Pingaling server` 
 
 # Usage
 Once you have the Pingaling server running, you can use the client to configure and interogate the service. Pingaling is heavily inspired by Kubernetes and `kubectl`.
@@ -77,7 +84,7 @@ mix phx.server
 ```
 
 ## Running the client
-The client is currently written in Ruby (assumes Ruby 2.5), but we are planning to re-write this into Golang once the API has all major planned features.
+Ruby 2.5 or higher is recommended
 
 ```bash
 bundle install
