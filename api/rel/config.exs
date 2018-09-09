@@ -10,7 +10,7 @@
 use Mix.Releases.Config,
     # This sets the default release built by `mix release`
     default_release: :default,
-    # This sets the default environment used by `mix release`
+      # This sets the default environment used by `mix release`
     default_environment: Mix.env()
 
 # For a full list of config options for both releases
@@ -47,11 +47,13 @@ end
 
 release :api do
   set applications: [
-    :runtime_tools
-  ]
+        :runtime_tools,
+        :inets,
+        :ssl
+      ]
   set commands: [
-    migrate: "rel/commands/migrate.sh"
-  ]
+        migrate: "rel/commands/migrate.sh"
+      ]
   set version: current_version(:api)
 end
 
