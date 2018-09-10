@@ -4,9 +4,9 @@ RUN curl https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for
 
 RUN mkdir /app
 WORKDIR /app
-COPY Gemfile /app
-COPY Gemfile.lock /app
+COPY cli/Gemfile /app
+COPY cli/Gemfile.lock /app
 RUN bundle install
 
-COPY . /app
+COPY cli /app
 CMD waitforit api_acceptance_tests:4000 --timeout=120 && bundle exec rspec

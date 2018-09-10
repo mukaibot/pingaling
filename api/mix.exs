@@ -24,8 +24,10 @@ defmodule Api.Mixfile do
     ]
   end
 
+  # This assumes version.txt is in the API dir. The Dockerfile copies this in from
+  # the root of the git repo when docker-compose is run
   def version do
-    Path.join([__ENV__.file, "..", "..", "version.txt"])
+    Path.join([__ENV__.file, "..", "version.txt"])
     |> Path.expand
     |> File.read!
     |> String.trim

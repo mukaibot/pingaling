@@ -3,7 +3,8 @@ services:
   api_test:
     image: api_tests
     build:
-      context: api
+      context: .
+      dockerfile: api/Dockerfile
       target: development
     container_name: pingaling_api
     depends_on:
@@ -19,7 +20,8 @@ services:
   api_acceptance_tests:
     image: api_acceptance_tests
     build:
-      context: api
+      context: .
+      dockerfile: api/Dockerfile
       target: development
     container_name: pingaling_api_acceptance_tests
     depends_on:
@@ -44,7 +46,9 @@ services:
 
   cli:
     image: cli
-    build: cli
+    build:
+      context: .
+      dockerfile: cli/Dockerfile
     container_name: pingaling_cli
     depends_on:
       - api_acceptance_tests
