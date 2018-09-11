@@ -1,7 +1,7 @@
 defmodule Api.Checker do
   use GenServer
   alias Api.Resources.NextChecks
-  alias Api.CheckHandlers.EndpointChecker
+  alias Api.CheckHandlers.Endpoint
   require Logger
 
   @check_every 3_000 # seconds
@@ -21,8 +21,15 @@ defmodule Api.Checker do
   def handle_info(:work, _state) do
     Process.send_after(self(), :work, @check_every)
     endpoints_to_check = NextChecks.find()
-    Enum.map(endpoints_to_check, fn ep -> EndpointChecker.check(ep) end)
+    Enum.map(endpoints_to_check, fn ep -> check_endpoint(ep) end)
 
     {:noreply, %{last_run_at: :calendar.local_time()}}
+  end
+
+  defp check_endpoint(endpoint) do
+    Logger.debug("Pinging #{endpoint.name} (id=#{endpoint.id}) on #{endpoint.url}")
+    check_result = :httpc.request(to_charlist endpoint.url)
+    NextChecks.set(endpoint)
+    Endpoint.handle_result(check_result, endpoint)
   end
 end
