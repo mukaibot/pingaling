@@ -72,3 +72,13 @@ Repo.transaction fn ->
     }
   )
 end
+
+Repo.transaction fn ->
+  Repo.insert!(
+    %Api.NotificationChannels.ChannelConfiguration {
+      name: "slacktastic",
+      type: "slack",
+      data: %{ "webhook_url" => "https://hooks.slack.com/services/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"},
+    }
+  )
+end
