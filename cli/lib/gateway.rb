@@ -22,6 +22,16 @@ class Gateway
     response.code == 200 ? response : raise(ApiUnavailableError.new(@host))
   end
 
+  def get_notification_channels()
+    response = HTTP.get(@host + '/notification_channels/')
+    response.code == 200 ? response : raise(ApiUnavailableError.new(@host))
+  end
+
+  def delete_notification_channel(name)
+    response = HTTP.delete(@host + '/notification_channels/' + name)
+    response.code == 200 ? response : raise(ApiUnavailableError.new(@host))
+  end
+
   def get_health_summary
     response = HTTP.get(@host + '/health/summary')
     response.code == 200 ? response : raise(ApiUnavailableError.new(@host))
