@@ -2,6 +2,8 @@ require 'spec_helper'
 require 'open3'
 
 RSpec.describe "Incidents acceptance test" do
+  let(:service) { "dingbat-poker" }
+
   it "returns the incidents" do
     Dir.chdir "bin" do
       command            = "./pingaling get incidents"
@@ -10,7 +12,7 @@ RSpec.describe "Incidents acceptance test" do
 
       aggregate_failures do
         expect(output[0]).to start_with "INCIDENT"
-        expect(output[1]).to include "dingbat"
+        expect(output[1]).to include service
       end
     end
   end

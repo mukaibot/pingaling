@@ -1,0 +1,21 @@
+require 'rspec/core/rake_task'
+
+desc "Runs All The Tests (unit and acceptance)"
+task :all_the_tests do
+  Rake::Task[:unit].invoke
+  Rake::Task[:acceptance].invoke
+end
+
+desc "Acceptance tests (easier to run with docker-compose)"
+RSpec::Core::RakeTask.new(:acceptance) do |t|
+  ENV['GATEWAY_MODE'] = nil
+  t.rspec_opts = "--pattern \"spec/acceptance_tests/*spec.rb\""
+end
+
+desc "Unit tests only"
+RSpec::Core::RakeTask.new(:unit) do |t|
+  ENV['GATEWAY_MODE'] = 'fake'
+  t.rspec_opts = "--exclude-pattern \"spec/acceptance_tests/*spec.rb\""
+end
+
+task default: :unit

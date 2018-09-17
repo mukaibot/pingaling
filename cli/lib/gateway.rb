@@ -4,7 +4,7 @@ require 'client_config'
 class Gateway
   def initialize
     @config = ClientConfig.new
-    @host = @config.host
+    @host   = @config.host
   end
 
   def describe_endpoint(name)
@@ -19,7 +19,14 @@ class Gateway
 
   def delete_endpoint(name)
     response = HTTP.delete(@host + '/endpoints/' + name)
-    response.code == 200 ? response : raise(ApiUnavailableError.new(@host))
+    case response.code
+    when 200
+      response
+    when 404
+      "Endpoint #{name} does not exist"
+    else
+      raise(ApiUnavailableError.new(@host))
+    end
   end
 
   def get_notification_channels()
