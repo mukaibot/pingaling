@@ -4,9 +4,9 @@ require 'open3'
 RSpec.describe 'Notification channels acceptance test' do
   it 'returns the notification channels' do
     Dir.chdir 'bin' do
-      command       = './pingaling get nc'
-      stderr_out, _ = Open3.capture2e(command)
-      output        = stderr_out.split("\n")
+      command     = './pingaling get nc'
+      stderr_out, = Open3.capture2e(command)
+      output      = stderr_out.split("\n")
 
       aggregate_failures do
         expect(output[0]).to start_with 'NAME'
@@ -17,9 +17,9 @@ RSpec.describe 'Notification channels acceptance test' do
 
   it 'returns the deleted message' do
     Dir.chdir 'bin' do
-      command       = './pingaling delete nc slacktastic'
-      stderr_out, _ = Open3.capture2e(command)
-      output        = stderr_out.split("\n")
+      command     = './pingaling delete nc slacktastic'
+      stderr_out, = Open3.capture2e(command)
+      output      = stderr_out.split("\n")
 
       aggregate_failures do
         expect(output[0]).to include 'Deleted notification channel slacktastic'
