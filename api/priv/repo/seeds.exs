@@ -3,6 +3,7 @@
 #     mix run priv/repo/seeds.exs
 alias Api.Resources
 alias Api.Repo
+alias Api.NotificationChannels
 
 Repo.transaction fn ->
   Repo.insert!(
@@ -89,6 +90,32 @@ Repo.transaction fn ->
       name: "slacktastic",
       type: "slack",
       data: %{ "webhook_url" => "https://hooks.slack.com/services/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"},
+    }
+  )
+end
+
+Repo.transaction fn ->
+  Repo.insert!(
+    %Api.Resources.Endpoint{
+      name: "dingbat-bar",
+      url: "http://bar-service/healthz"
+    }
+  )
+  Repo.insert!(
+    %Api.NotificationChannels.ChannelConfiguration {
+      name: "slack-bar",
+      type: "slack",
+      data: %{ "webhook_url" => "https://hooks.slack.com/services/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"},
+    }
+  )
+end
+
+Repo.transaction fn ->
+  Repo.insert!(
+    %Api.NotificationChannels.NotificationPolicy {
+      name: "alert-bar",
+      endpoint: Resources.get_endpoint!("dingbat-bar"),
+      notification_channel: NotificationChannels.get_notification_channel!("slack-bar"),
     }
   )
 end
