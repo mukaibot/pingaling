@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'open3'
 
 RSpec.describe "Incidents acceptance test" do
-  let(:service) { "dingbat-poker" }
+  let(:service) { "dingbat-bar" }
 
   it "returns the incidents" do
     Dir.chdir "bin" do
