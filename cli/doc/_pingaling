@@ -6,25 +6,41 @@ function _pingaling {
     _arguments -C \
         "-h[Show help information]" \
         "--h[Show help information]" \
-        "1: :(apply config get)" \
+        "1: :(apply completion config delete get)" \
         "*::arg:->args"
 
     case $line[1] in
-        get)
-            _pingaling_get
-        ;;
         apply)
             _pingaling_apply
         ;;
+        config)
+            _pingaling_config
+        ;;
+        delete)
+            _pingaling_delete
+        ;;
+        get)
+            _pingaling_get
+        ;;
     esac
-}
-
-function _pingaling_get {
-    _alternative \
-      'arguments:custom arg:((endpoints\:"List Endpoints" incidents\:"List Incidents"))'
 }
 
 function _pingaling_apply {
     _arguments \
         "-f[manifest file]:filename:_files"
+}
+
+function _pingaling_config {
+    _alternative \
+      'arguments:custom arg:((use-server\:"Switch active Pingaling server" get-servers\:"List configured Pingaling servers" current-server\:"Display the current Pingaling server" add-server\:"Add a Pingaling server"))'
+}
+
+function _pingaling_get {
+    _alternative \
+      'arguments:custom arg:((endpoints\:"List Endpoints" incidents\:"List Incidents" notification-channels\:"List Notification Channels"))'
+}
+
+function _pingaling_delete {
+    _alternative \
+      'arguments:custom arg:((endpoint\:"Delete Endpoint" notification-channel\:"Delete Notification Channel"))'
 }
