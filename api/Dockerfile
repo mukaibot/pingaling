@@ -28,7 +28,7 @@ WORKDIR /app
 
 RUN mix release
 
-FROM erlang:21.0.8 as production
+FROM erlang:21 as production
 ENV MIX_ENV prod
 ENV PORT 4000
 EXPOSE 4000
