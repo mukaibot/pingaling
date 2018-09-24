@@ -39,6 +39,16 @@ class Gateway
     response.code == 200 ? response : raise(ApiUnavailableError.new(@host))
   end
 
+  def get_notification_policies()
+    response = HTTP.get(@host + '/notification_policies/')
+    response.code == 200 ? response : raise(ApiUnavailableError.new(@host))
+  end
+
+  def delete_notification_policy(name)
+    response = HTTP.delete(@host + '/notification_policies/' + name)
+    response.code == 200 ? response : raise(ApiUnavailableError.new(@host))
+  end
+
   def get_health_summary
     response = HTTP.get(@host + '/health/summary')
     response.code == 200 ? response : raise(ApiUnavailableError.new(@host))

@@ -37,10 +37,10 @@ function _pingaling_config {
 
 function _pingaling_get {
     _alternative \
-      'arguments:custom arg:((endpoints\:"List Endpoints" incidents\:"List Incidents" notification-channels\:"List Notification Channels"))'
+      'arguments:custom arg:((endpoints\:"List Endpoints" incidents\:"List Incidents" notification-channels\:"List Notification Channels" notification-policies\:"List Notification Policies"))'
 }
 
 function _pingaling_delete {
     _alternative \
-      'arguments:custom arg:((endpoint\:"Delete Endpoint" notification-channel\:"Delete Notification Channel"))'
+      'arguments:custom arg:((endpoint\:"Delete Endpoint" notification-channel\:"Delete Notification Channel" notification-policy\:"Delete Notification Policy"))'
 }
