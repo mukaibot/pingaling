@@ -8,64 +8,61 @@ class Gateway
   end
 
   def describe_endpoint(name)
-    response = HTTP.get(@host + '/endpoints/describe/' + name)
-    response.code == 200 ? response : raise(ApiUnavailableError.new(@host))
+    handle_response HTTP.get(@host + '/endpoints/describe/' + name)
   end
 
   def get_endpoint(name)
-    response = HTTP.get(@host + '/endpoints/' + name)
-    response.code == 200 ? response : raise(ApiUnavailableError.new(@host))
+    handle_response HTTP.get(@host + '/endpoints/' + name)
   end
 
   def delete_endpoint(name)
-    response = HTTP.delete(@host + '/endpoints/' + name)
-    case response.code
-    when 200
-      response
-    when 404
-      "Endpoint #{name} does not exist"
-    else
-      raise(ApiUnavailableError.new(@host))
-    end
+    handle_response HTTP.delete(@host + '/endpoints/' + name)
   end
 
-  def get_notification_channels()
-    response = HTTP.get(@host + '/notification_channels/')
-    response.code == 200 ? response : raise(ApiUnavailableError.new(@host))
+  def get_notification_channels
+    handle_response HTTP.get(@host + '/notification_channels/')
   end
 
   def delete_notification_channel(name)
-    response = HTTP.delete(@host + '/notification_channels/' + name)
-    response.code == 200 ? response : raise(ApiUnavailableError.new(@host))
+    handle_response HTTP.delete(@host + '/notification_channels/' + name)
   end
 
   def get_notification_policies()
-    response = HTTP.get(@host + '/notification_policies/')
-    response.code == 200 ? response : raise(ApiUnavailableError.new(@host))
+    handle_response HTTP.get(@host + '/notification_policies/')
   end
 
   def delete_notification_policy(name)
-    response = HTTP.delete(@host + '/notification_policies/' + name)
-    response.code == 200 ? response : raise(ApiUnavailableError.new(@host))
+    handle_response HTTP.delete(@host + '/notification_policies/' + name)
   end
 
   def get_health_summary
-    response = HTTP.get(@host + '/health/summary')
-    response.code == 200 ? response : raise(ApiUnavailableError.new(@host))
+    handle_response HTTP.get(@host + '/health/summary')
   end
 
   def get_incidents
-    response = HTTP.get(@host + '/incidents')
-    response.code == 200 ? response : raise(ApiUnavailableError.new(@host))
+    handle_response HTTP.get(@host + '/incidents')
   end
 
   def post_manifest(json)
-    HTTP.post(@host + '/manifest', json: { manifest: json })
+    handle_response HTTP.post(@host + '/manifest', json: { manifest: json })
   end
 
   class ApiUnavailableError < StandardError
     def initialize(host)
       super("There was a problem talking to the API at #{host}")
+    end
+  end
+
+  private
+
+  def handle_response(response)
+    case response.code
+    when 200
+      response
+    when 404
+      response
+    else
+      raise(ApiUnavailableError.new(@host))
     end
   end
 end
