@@ -8,16 +8,16 @@ defmodule Api.CheckHandlers.Endpoint do
 
   def handle_result({:ok, {{'HTTP/1.1', 200, 'OK'}, _headers, _body}}, endpoint) do
     SuccessHandler.handle(endpoint)
-    Logger.debug("OK #{endpoint.name}")
+    Logger.info("OK #{endpoint.name}")
   end
 
   def handle_result({:error, {:failed_connect, _params}}, endpoint) do
     FailureHandler.handle(endpoint)
-    Logger.debug("FAIL #{endpoint.name}")
+    Logger.info("FAIL #{endpoint.name}")
   end
 
   def handle_result(_, endpoint) do
     FailureHandler.handle(endpoint)
-    Logger.debug("FAIL #{endpoint.name}")
+    Logger.info("FAIL #{endpoint.name}")
   end
 end
