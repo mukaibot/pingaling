@@ -57,7 +57,7 @@ class Gateway
 
   def handle_response(response)
     case response.code
-    when 200
+    when 200..299
       response
     when 404
       response
