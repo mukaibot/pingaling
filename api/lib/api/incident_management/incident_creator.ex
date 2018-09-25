@@ -52,12 +52,12 @@ defmodule Api.IncidentManagement.IncidentCreator do
         create_and_alert(endpoint)
 
       1 ->
-        Logger.debug("Incident already open for #{endpoint.name}")
+        Logger.info("Incident already open for #{endpoint.name}")
     end
   end
 
   defp create_and_alert(endpoint) do
-    Logger.debug("Creating incident for #{endpoint.name}")
+    Logger.info("Creating incident for #{endpoint.name}")
 
     {_, incident } = %Incident{}
                |> Incident.changeset(%{status: :open})

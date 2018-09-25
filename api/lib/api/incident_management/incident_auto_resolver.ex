@@ -48,11 +48,7 @@ defmodule Api.IncidentManagement.IncidentAutoResolver do
     [last_health | _] = HealthSummariser.recent_health_statuses(incident.endpoint, 1)
 
     if last_health == :healthy do
-      Logger.debug("")
-      Logger.debug("******")
-      Logger.debug("Resolving incident for #{incident.endpoint.name}")
-      Logger.debug("******")
-      Logger.debug("")
+      Logger.info("Resolving incident for #{incident.endpoint.name}")
 
       incident
       |> Incident.changeset(%{status: :auto_resolved})
