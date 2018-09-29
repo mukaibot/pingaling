@@ -1,0 +1,15 @@
+#!/bin/bash
+set -e
+PLATFORM=$(uname -s | tr '[:upper:]' '[:lower:]')
+
+if [ ! -f bin/rubyc ]; then
+  echo "Downloading rubyc..."
+  curl -L http://enclose.io/rubyc/rubyc-${PLATFORM}-x64.gz | gunzip > bin/rubyc
+fi
+
+# Files outside this root won't be copied in. This is required to allow the version
+# command to work
+cp ../version.txt version.txt
+
+# The CPPFLAGS are necessary for libcurses to compile
+CPPFLAGS="-P" bin/rubyc bin/pingaling -o pingaling.bin

@@ -1,17 +1,18 @@
 api/version.txt
-.env
-log
-.rakeTasks
-tmp
-vendor/bundle
-# App artifacts
+cli/version.txt
 _build
 db
 deps
-*.ez
-
-# Generated on crash by the VM
+.env
 erl_crash.dump
+examples.txt
+*.ez
+log
+pingaling.bin
+.rakeTasks
+rubyc
+tmp
+vendor/bundle
 
 # Files matching config/*.secret.exs pattern contain sensitive
 # data and you should not commit them into version control.
@@ -20,4 +21,3 @@ erl_crash.dump
 # secrets files as long as you replace their contents by environment
 # variables.
 *.secret.exs
-examples.txt

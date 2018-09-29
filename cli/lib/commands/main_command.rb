@@ -13,7 +13,9 @@ module Commands
     subcommand ['completion'], 'Output ZSH shell completion', Commands::Completion
 
     option ['-v', '--version'], :flag, "Show version" do
-      puts File.read(File.expand_path(File.join(__dir__, "..", "..", "..", "version.txt"))).chomp
+      from_root = File.expand_path(File.join(__dir__, "..", "..", "..", "version.txt"))
+      copied_to_cli = File.expand_path(File.join(__dir__, "..", "..", "version.txt"))
+      puts File.read(File.exists?(from_root) ? from_root : copied_to_cli).chomp
       exit(0)
     end
 
